@@ -166,6 +166,8 @@
   .modal-link::before { content: '→'; font-size: 13px; }
   .modal-note { margin-top: 16px; padding: 12px 16px; border-left: 2px solid rgba(201,168,76,0.35); background: rgba(201,168,76,0.04); font-style: italic; font-size: 13px; color: var(--parchment); opacity: 0.55; line-height: 1.6; }
 
+
+
   /* ===== TEAMS SIDEBAR ===== */
   #teams-tab {
     position: fixed;
@@ -173,7 +175,6 @@
     transform: translateY(-50%);
     z-index: 150;
     writing-mode: vertical-rl;
-    text-orientation: mixed;
     background: linear-gradient(180deg, #1c1910 0%, #141108 100%);
     border: 1px solid rgba(201,168,76,0.25);
     border-left: none;
@@ -190,6 +191,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    user-select: none;
   }
   #teams-tab:hover {
     background: rgba(201,168,76,0.12);
@@ -197,170 +199,162 @@
     color: var(--gold-light);
     padding-left: 14px;
   }
-  #teams-tab .tab-icon {
-    writing-mode: horizontal-tb;
-    font-size: 14px;
-    margin-bottom: 6px;
-  }
+  #teams-tab .tab-icon { writing-mode: horizontal-tb; font-size: 15px; margin-bottom: 4px; }
 
+  /* Main panel */
   #teams-panel {
     position: fixed;
     left: 0; top: 0;
-    width: 400px;
-    height: 100vh;
+    width: 400px; height: 100vh;
     background: linear-gradient(160deg, #1c1910 0%, #100e08 100%);
     border-right: 1px solid rgba(201,168,76,0.2);
-    transform: translateX(-100%);
-    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
     z-index: 250;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     box-shadow: 6px 0 40px rgba(0,0,0,0.6);
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
   }
-  #teams-panel.open {
-    transform: translateX(0);
-  }
+  #teams-panel.open { transform: translateX(0); }
 
-  .teams-header {
-    padding: 24px 28px 0;
+  /* ── PANEL HEADER ── */
+  .tp-header {
+    padding: 22px 28px 18px;
+    border-bottom: 1px solid rgba(201,168,76,0.12);
     flex-shrink: 0;
+    position: relative;
   }
-  .teams-title {
+  .tp-eyebrow {
     font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 3.5px;
+    font-size: 9px; letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--gold);
-    opacity: 0.7;
-    margin-bottom: 4px;
+    color: var(--gold); opacity: 0.55;
+    margin-bottom: 3px;
   }
-  .teams-headline {
+  .tp-title {
     font-family: 'Cinzel', serif;
-    font-size: 20px;
-    font-weight: 900;
-    color: var(--parchment);
-    margin-bottom: 20px;
-    line-height: 1.2;
+    font-size: 19px; font-weight: 900;
+    color: var(--parchment); line-height: 1.2;
   }
-  .close-teams {
-    position: absolute;
-    top: 22px; right: 22px;
-    background: none;
-    border: 1px solid rgba(201,168,76,0.3);
-    color: var(--gold);
-    width: 30px; height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 14px;
+  .tp-close {
+    position: absolute; top: 20px; right: 22px;
+    background: none; border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); width: 30px; height: 30px;
+    border-radius: 50%; cursor: pointer; font-size: 14px;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.2s;
   }
-  .close-teams:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
+  .tp-close:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
 
-  /* Country selector dropdown */
-  .team-selector-wrap {
-    padding: 0 28px 18px;
-    flex-shrink: 0;
-    border-bottom: 1px solid rgba(201,168,76,0.1);
-    position: relative;
-  }
-  .team-selector {
-    width: 100%;
-    background: rgba(201,168,76,0.06);
-    border: 1px solid rgba(201,168,76,0.25);
-    color: var(--parchment);
-    font-family: 'Cinzel', serif;
-    font-size: 12px;
-    letter-spacing: 1px;
-    padding: 10px 14px;
-    border-radius: 2px;
-    cursor: pointer;
-    appearance: none;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .team-selector:focus { border-color: var(--gold); }
-  .team-selector option { background: #1c1910; color: var(--parchment); }
-  .selector-arrow {
-    position: absolute;
-    right: 40px; top: 50%;
-    transform: translateY(-50%);
-    color: var(--gold); opacity: 0.6;
-    pointer-events: none;
-    font-size: 10px;
-  }
-
-  /* Scrollable team body */
-  .team-body {
-    flex: 1;
-    overflow-y: auto;
+  /* ── SCHOOL LIST VIEW ── */
+  #school-list-view {
+    flex: 1; overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(201,168,76,0.2) transparent;
-    padding: 20px 28px 28px;
+    padding: 14px 0 24px;
   }
+  .school-list-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 28px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(201,168,76,0.07);
+    transition: background 0.2s;
+    position: relative;
+  }
+  .school-list-item::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--gold);
+    transform: scaleY(0); transition: transform 0.2s;
+  }
+  .school-list-item:hover { background: rgba(201,168,76,0.07); }
+  .school-list-item:hover::before { transform: scaleY(1); }
+  .sli-flag { font-size: 26px; flex-shrink: 0; line-height: 1; }
+  .sli-info { flex: 1; min-width: 0; }
+  .sli-name {
+    font-family: 'Cinzel', serif; font-size: 11px; font-weight: 600;
+    color: var(--parchment); line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    margin-bottom: 3px;
+  }
+  .sli-location { font-size: 11px; color: var(--gold); opacity: 0.6; font-style: italic; }
+  .sli-count {
+    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1px;
+    color: var(--gold); opacity: 0.4;
+    flex-shrink: 0;
+  }
+  .sli-arrow {
+    color: var(--gold); opacity: 0.25; font-size: 14px;
+    flex-shrink: 0; transition: all 0.2s;
+  }
+  .school-list-item:hover .sli-arrow { opacity: 0.8; transform: translateX(3px); }
 
-  /* School info */
-  .team-school {
-    font-size: 12px;
-    color: var(--gold);
-    opacity: 0.55;
-    letter-spacing: 1px;
-    font-style: italic;
-    margin-bottom: 20px;
+  /* ── SCHOOL DETAIL VIEW ── */
+  #school-detail-view {
+    flex: 1; overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(201,168,76,0.2) transparent;
+    display: none;
+    flex-direction: column;
+  }
+  #school-detail-view.active { display: flex; }
+
+  .sd-back {
+    display: flex; align-items: center; gap: 8px;
+    padding: 14px 28px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    font-family: 'Cinzel', serif; font-size: 10px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--gold); opacity: 0.6;
+    transition: opacity 0.2s; flex-shrink: 0;
+  }
+  .sd-back:hover { opacity: 1; }
+  .sd-back-arrow { font-size: 14px; }
+
+  .sd-body { padding: 20px 28px 32px; flex: 1; }
+
+  .sd-flag { font-size: 36px; margin-bottom: 8px; line-height: 1; }
+  .sd-school-name {
+    font-family: 'Cinzel', serif; font-size: 14px; font-weight: 900;
+    color: var(--parchment); line-height: 1.3; margin-bottom: 4px;
+  }
+  .sd-location {
+    font-size: 12px; color: var(--gold); opacity: 0.6;
+    font-style: italic; margin-bottom: 20px;
   }
 
   /* Group photo */
-  .group-photo-wrap {
-    width: 100%;
-    height: 160px;
+  .sd-group-photo {
+    width: 100%; height: 150px;
     background: rgba(201,168,76,0.04);
-    border: 1px solid rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.14);
     border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 22px;
-    overflow: hidden;
-    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 22px; overflow: hidden; position: relative;
   }
-  .group-photo-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
+  .sd-group-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sd-group-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 7px; opacity: 0.28;
   }
-  .group-photo-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    opacity: 0.3;
-  }
-  .group-photo-placeholder .ph-icon { font-size: 32px; }
-  .group-photo-placeholder span {
-    font-family: 'Cinzel', serif;
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
+  .sd-group-placeholder .ph-cam { font-size: 28px; }
+  .sd-group-placeholder span {
+    font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gold);
   }
 
-  /* Members section label */
-  .members-label {
-    font-family: 'Cinzel', serif;
-    font-size: 9px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    opacity: 0.5;
+  /* Members section */
+  .sd-members-label {
+    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--gold); opacity: 0.5;
     margin-bottom: 14px;
   }
 
-  /* Member grid */
-  .members-grid {
+  /* Member grid — 3 columns */
+  .sd-members-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 
   .member-card {
@@ -370,83 +364,47 @@
     border-radius: 2px;
     overflow: hidden;
     cursor: default;
-    transition: border-color 0.2s, background 0.2s;
+    transition: border-color 0.2s;
     aspect-ratio: 3/4;
   }
-  .member-card:hover {
-    border-color: rgba(201,168,76,0.4);
-    background: rgba(201,168,76,0.08);
+  .member-card:hover { border-color: rgba(201,168,76,0.45); }
+
+  /* Photo / silhouette */
+  .member-photo { width: 100%; height: 72%; object-fit: cover; display: block; }
+  .member-silhouette {
+    width: 100%; height: 72%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(201,168,76,0.03);
+  }
+  .member-silhouette svg { width: 50%; opacity: 0.18; fill: var(--gold); }
+
+  /* Name strip */
+  .member-name-strip {
+    height: 28%;
+    display: flex; align-items: center;
+    padding: 0 8px;
+    font-family: 'Cinzel', serif; font-size: 9px; font-weight: 600;
+    color: var(--parchment); line-height: 1.2;
+    text-align: center; justify-content: center;
   }
 
-  /* Photo area */
-  .member-photo {
-    width: 100%;
-    height: 75%;
-    object-fit: cover;
-    display: block;
-  }
-  .member-photo-placeholder {
-    width: 100%;
-    height: 75%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(201,168,76,0.05);
-  }
-  /* SVG silhouette */
-  .member-photo-placeholder svg {
-    width: 52%;
-    opacity: 0.22;
-    fill: var(--gold);
-  }
-
-  /* Name strip at bottom */
-  .member-info {
-    padding: 8px 10px;
-    height: 25%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .member-name {
-    font-family: 'Cinzel', serif;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--parchment);
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* Hover tooltip */
-  .member-tooltip {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(14,12,8,0.1) 0%, rgba(14,12,8,0.92) 55%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 12px 10px;
-    opacity: 0;
-    transition: opacity 0.25s;
+  /* Hover overlay with name + bio */
+  .member-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(10,8,4,0.05) 0%, rgba(10,8,4,0.93) 52%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 10px 9px;
+    opacity: 0; transition: opacity 0.25s;
     pointer-events: none;
   }
-  .member-card:hover .member-tooltip { opacity: 1; }
-  .tooltip-name {
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--gold-light);
-    margin-bottom: 4px;
-    line-height: 1.3;
+  .member-card:hover .member-overlay { opacity: 1; }
+  .ov-name {
+    font-family: 'Cinzel', serif; font-size: 10px; font-weight: 600;
+    color: var(--gold-light); margin-bottom: 4px; line-height: 1.2;
   }
-  .tooltip-role {
-    font-size: 11px;
-    font-style: italic;
-    color: var(--parchment);
-    opacity: 0.7;
-    line-height: 1.4;
+  .ov-bio {
+    font-size: 10px; font-style: italic;
+    color: var(--parchment); opacity: 0.72; line-height: 1.4;
   }
 
 </style>
@@ -459,8 +417,8 @@
 </header>
 
 <div id="map-container">
-  <svg id="world-svg" viewBox="0 60 1000 390" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="1000" height="500" fill="#0c0b09"/>
+  <svg id="world-svg" viewBox="405 62 235 175" xmlns="http://www.w3.org/2000/svg">
+    <rect x="405" y="62" width="235" height="175" fill="#0c0b09"/>
 <path class="country" d="M 827.0,238.4 L 827.6,238.7 L 827.0,238.4 Z"/>
 <path class="country" d="M 845.7,275.6 L 847.6,275.2 L 847.1,275.7 L 847.1,277.0 L 845.6,278.4 L 843.0,278.9 L 843.8,278.1 L 843.3,278.0 L 843.6,276.8 L 844.5,276.1 L 845.3,276.5 L 845.7,275.6 Z"/>
 <path class="country" d="M 826.6,238.4 L 826.1,238.6 L 827.3,239.7 L 826.3,239.5 L 826.4,240.0 L 825.1,240.0 L 826.2,240.5 L 825.8,241.0 L 826.7,241.4 L 826.5,241.9 L 827.0,241.9 L 826.7,242.1 L 828.0,243.5 L 827.1,244.4 L 830.6,247.3 L 828.8,247.8 L 827.5,246.9 L 827.9,247.8 L 827.1,247.9 L 826.3,249.7 L 826.2,251.5 L 826.8,251.2 L 826.3,251.9 L 826.7,252.1 L 825.8,252.2 L 824.9,253.4 L 824.3,252.8 L 824.3,253.8 L 822.8,255.0 L 823.5,255.3 L 823.0,256.0 L 823.9,256.2 L 823.7,257.1 L 823.1,257.0 L 823.0,258.3 L 822.6,257.8 L 823.0,258.7 L 822.1,260.0 L 818.5,261.6 L 818.2,259.3 L 818.0,259.7 L 817.4,259.4 L 817.7,258.9 L 815.6,259.6 L 815.6,258.8 L 814.9,259.1 L 814.0,258.1 L 813.9,258.8 L 812.9,259.5 L 811.7,259.3 L 810.8,259.9 L 810.4,257.6 L 809.9,258.4 L 808.2,258.6 L 807.7,258.4 L 808.2,258.0 L 807.4,258.6 L 807.1,258.0 L 806.3,258.3 L 806.3,257.0 L 805.3,255.1 L 805.7,253.7 L 804.9,252.4 L 803.5,252.4 L 803.5,251.9 L 804.2,252.0 L 803.2,251.5 L 802.9,250.7 L 803.4,250.7 L 803.2,249.9 L 803.6,250.0 L 802.6,249.1 L 802.6,246.8 L 803.5,246.1 L 802.7,246.6 L 803.7,244.6 L 804.6,244.2 L 804.2,244.7 L 804.6,245.6 L 807.1,247.6 L 808.9,247.0 L 810.6,247.2 L 812.4,245.6 L 813.8,245.6 L 813.8,246.1 L 815.6,246.6 L 816.4,246.0 L 818.2,246.0 L 819.0,244.7 L 818.8,243.8 L 820.0,243.0 L 819.6,242.1 L 820.7,241.6 L 820.9,239.1 L 821.8,237.8 L 825.6,237.9 L 826.6,238.4 Z"/>
@@ -2682,58 +2640,58 @@
     <!-- Site markers -->
     <!-- Istanbul -->
     <circle class="site-dot" cx="580.5" cy="124.9" r="3"/>
-    <circle class="site-ring" cx="580.5" cy="124.9" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="580.5" cy="124.9" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" repeatCount="indefinite"/></circle>
     <!-- Ephesus -->
     <circle class="site-dot" cx="575.9" cy="135.9" r="3"/>
-    <circle class="site-ring" cx="575.9" cy="135.9" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="0.2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.2s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="575.9" cy="135.9" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="0.2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.2s" repeatCount="indefinite"/></circle>
     <!-- Arslantepe -->
     <circle class="site-dot" cx="606.6" cy="134.4" r="3"/>
-    <circle class="site-ring" cx="606.6" cy="134.4" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="0.4s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.4s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="606.6" cy="134.4" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="0.4s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.4s" repeatCount="indefinite"/></circle>
     <!-- Göreme -->
     <circle class="site-dot" cx="596.8" cy="133.5" r="3"/>
-    <circle class="site-ring" cx="596.8" cy="133.5" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.6s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="596.8" cy="133.5" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.6s" repeatCount="indefinite"/></circle>
     <!-- Hattusha -->
     <circle class="site-dot" cx="596.2" cy="128.5" r="3"/>
-    <circle class="site-ring" cx="596.2" cy="128.5" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="0.8s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.8s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="596.2" cy="128.5" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="0.8s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.8s" repeatCount="indefinite"/></circle>
     <!-- Divriği -->
     <circle class="site-dot" cx="605.9" cy="130.8" r="3"/>
-    <circle class="site-ring" cx="605.9" cy="130.8" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="1.0s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.0s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="605.9" cy="130.8" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.0s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.0s" repeatCount="indefinite"/></circle>
     <!-- Safranbolu -->
     <circle class="site-dot" cx="590.8" cy="124.0" r="3"/>
-    <circle class="site-ring" cx="590.8" cy="124.0" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.2s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="590.8" cy="124.0" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.2s" repeatCount="indefinite"/></circle>
     <!-- Selimiye/Edirne -->
     <circle class="site-dot" cx="573.8" cy="122.4" r="3"/>
-    <circle class="site-ring" cx="573.8" cy="122.4" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.4s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="573.8" cy="122.4" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.4s" repeatCount="indefinite"/></circle>
     <!-- Ani -->
     <circle class="site-dot" cx="621.0" cy="126.7" r="3"/>
-    <circle class="site-ring" cx="621.0" cy="126.7" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.6s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="621.0" cy="126.7" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.6s" repeatCount="indefinite"/></circle>
     <!-- Bursa/Cumalıkızık -->
     <circle class="site-dot" cx="581.0" cy="127.9" r="3"/>
-    <circle class="site-ring" cx="581.0" cy="127.9" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.8s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="581.0" cy="127.9" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.8s" repeatCount="indefinite"/></circle>
     <!-- Çatalhöyük -->
     <circle class="site-dot" cx="591.2" cy="136.9" r="3"/>
-    <circle class="site-ring" cx="591.2" cy="136.9" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="2.0s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.0s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="591.2" cy="136.9" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="2.0s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.0s" repeatCount="indefinite"/></circle>
     <!-- Diyarbakır -->
     <circle class="site-dot" cx="611.8" cy="136.0" r="3"/>
-    <circle class="site-ring" cx="611.8" cy="136.0" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.2s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="611.8" cy="136.0" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.2s" repeatCount="indefinite"/></circle>
     <!-- Gordion -->
     <circle class="site-dot" cx="589.6" cy="129.8" r="3"/>
-    <circle class="site-ring" cx="589.6" cy="129.8" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.4s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="589.6" cy="129.8" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.4s" repeatCount="indefinite"/></circle>
     <!-- Aphrodisias -->
     <circle class="site-dot" cx="579.8" cy="136.8" r="3"/>
-    <circle class="site-ring" cx="579.8" cy="136.8" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.6s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="579.8" cy="136.8" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.6s" repeatCount="indefinite"/></circle>
     <!-- Pergamon -->
     <circle class="site-dot" cx="575.5" cy="131.7" r="3"/>
-    <circle class="site-ring" cx="575.5" cy="131.7" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="2.8s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.8s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="575.5" cy="131.7" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="2.8s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.8s" repeatCount="indefinite"/></circle>
     <!-- Pamukkale -->
     <circle class="site-dot" cx="580.9" cy="136.0" r="3"/>
-    <circle class="site-ring" cx="580.9" cy="136.0" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="3.0s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="3.0s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="580.9" cy="136.0" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="3.0s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="3.0s" repeatCount="indefinite"/></circle>
     <!-- Rome -->
     <circle class="site-dot" cx="534.7" cy="121.6" r="3"/>
-    <circle class="site-ring" cx="534.7" cy="121.6" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.5s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="534.7" cy="121.6" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.5s" repeatCount="indefinite"/></circle>
     <!-- Thessaloniki -->
     <circle class="site-dot" cx="563.8" cy="126.3" r="3"/>
-    <circle class="site-ring" cx="563.8" cy="126.3" r="3"><animate attributeName="r" from="3" to="11" dur="2.5s" begin="1.3s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.3s" repeatCount="indefinite"/></circle>
+    <circle class="site-ring" cx="563.8" cy="126.3" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.3s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.3s" repeatCount="indefinite"/></circle>
   </svg>
 
   <div id="instruction">Hover over a glowing country · Click to explore its heritage sites</div>
@@ -3046,84 +3004,165 @@ document.addEventListener("keydown", e => {
   }
 });
 
+
 // ===== TEAMS PANEL =====
-
-const TEAMS = [
+const SCHOOLS = [
   {
-    country: "Turkey (Türkiye)",
-    flag: "🇹🇷",
-    school: "Sample High School, Ankara",
-    groupPhoto: "",
-    members: [
-      { name: "Ayşe Kaya", role: "Team Lead & Research Coordinator", photo: "" },
-      { name: "Mehmet Yılmaz", role: "Cartography & GIS", photo: "" },
-      { name: "Zeynep Demir", role: "Historical Research", photo: "" },
-      { name: "Emre Çelik", role: "Content Writer", photo: "" },
-      { name: "Fatma Şahin", role: "Visual Design", photo: "" },
-      { name: "Ali Öztürk", role: "Photography", photo: "" },
+    "school": "Lüleburgaz Atatürk Anadolu Lisesi",
+    "city": "Lüleburgaz",
+    "country": "Türkiye",
+    "flag": "🇹🇷",
+    "groupPhoto": "https://i.ibb.co/WWcxrPkW/photo.jpg",
+    "students": [
+      "Melis",
+      "Nisa Nur",
+      "Melek",
+      "Öykü",
+      "İnanç",
+      "Berk",
+      "Mehmet Can"
+    ],
+    "bios": {
+      "Melis": "10th grade student. Enthusiastic about history, especially of the Mesopotamian region.",
+      "Nisa Nur": "10th grader. Always curious, always learning. Passionate about history.",
+      "Melek": "A curious mind with lots of questions and wits.",
+      "Öykü": "A kind-hearted visual learner. Aims to be a psychologist in the future.",
+      "İnanç": "9th grader. Passionate about computer games and wants to develop his own in the future.",
+      "Berk": "9th grade student. Always eager to get his work done.",
+      "Mehmet Can": "9th grade student with a wide range of interests. Really fond of history."
+    }
+  },
+  {
+    "school": "Hacı Bektaş Veli Anadolu Lisesi",
+    "city": "İstanbul",
+    "country": "Türkiye",
+    "flag": "🇹🇷",
+    "groupPhoto": "",
+    "students": [
+      "Deren",
+      "Ali",
+      "Ayşe"
     ]
   },
   {
-    country: "Italy",
-    flag: "🇮🇹",
-    school: "Liceo Classico, Rome",
-    groupPhoto: "",
-    members: [
-      { name: "Giulia Rossi", role: "Team Lead & Research Coordinator", photo: "" },
-      { name: "Marco Bianchi", role: "Historical Research", photo: "" },
-      { name: "Sofia Esposito", role: "Content Writer", photo: "" },
-      { name: "Luca Romano", role: "Visual Design", photo: "" },
-      { name: "Elena Ferrari", role: "Photography", photo: "" },
-      { name: "Andrea Ricci", role: "Data & Mapping", photo: "" },
+    "school": "IES Galileo Galilei",
+    "city": "Cordoba",
+    "country": "Spain",
+    "flag": "🇪🇸",
+    "groupPhoto": "",
+    "students": [
+      "Xavi",
+      "Puyol",
+      "İniesta"
     ]
   },
   {
-    country: "Greece",
-    flag: "🇬🇷",
-    school: "Gymnasio, Thessaloniki",
-    groupPhoto: "",
-    members: [
-      { name: "Eleni Papadaki", role: "Team Lead & Research Coordinator", photo: "" },
-      { name: "Nikos Georgiou", role: "Historical Research", photo: "" },
-      { name: "Maria Konstantinou", role: "Content Writer", photo: "" },
-      { name: "Dimitris Alexiou", role: "Visual Design", photo: "" },
-      { name: "Katerina Stavros", role: "Photography", photo: "" },
-      { name: "Yannis Petrou", role: "Cartography & GIS", photo: "" },
+    "school": "OEMUC \"ST. Naum Ohridski\"",
+    "city": "Ohrid",
+    "country": "North Macedonia",
+    "flag": "🇲🇰",
+    "groupPhoto": "",
+    "students": [
+      "Alexander"
     ]
   },
   {
-    country: "Country 4",
-    flag: "🏳️",
-    school: "School Name",
-    groupPhoto: "",
-    members: [
-      { name: "Student Name", role: "Role", photo: "" },
-      { name: "Student Name", role: "Role", photo: "" },
-      { name: "Student Name", role: "Role", photo: "" },
-      { name: "Student Name", role: "Role", photo: "" },
+    "school": "EEEEK of Ikaria",
+    "city": "Ikaria",
+    "country": "Greece",
+    "flag": "🇬🇷",
+    "groupPhoto": "",
+    "students": [
+      "Socrates"
     ]
   },
   {
-    country: "Country 5",
-    flag: "🏳️",
-    school: "School Name",
-    groupPhoto: "",
-    members: [
-      { name: "Student Name", role: "Role", photo: "" },
-      { name: "Student Name", role: "Role", photo: "" },
-      { name: "Student Name", role: "Role", photo: "" },
-      { name: "Student Name", role: "Role", photo: "" },
+    "school": "Special High School and Lyceum for Deaf & Hard of Hearing Pupils",
+    "city": "Thessaloniki",
+    "country": "Greece",
+    "flag": "🇬🇷",
+    "groupPhoto": "",
+    "students": [
+      "Zeus"
     ]
   },
+  {
+    "school": "Osnovna šola Sveti Jurij ob Ščavnici",
+    "city": "Sveti Jurij",
+    "country": "Slovenia",
+    "flag": "🇸🇮",
+    "groupPhoto": "",
+    "students": [
+      "Jurij"
+    ]
+  },
+  {
+    "school": "Základná škola s materskou školou J. Bakossa",
+    "city": "Banská Bystrica",
+    "country": "Slovakia",
+    "flag": "🇸🇰",
+    "groupPhoto": "",
+    "students": [
+      "Dana"
+    ]
+  },
+  {
+    "school": "Zespół Szkół Hotelarsko-Gastronomicznych w Gdyni",
+    "city": "Gdynia",
+    "country": "Poland",
+    "flag": "🇵🇱",
+    "groupPhoto": "",
+    "students": [
+      "Magda"
+    ]
+  },
+  {
+    "school": "IISS Leonardo Da Vinci",
+    "city": "Martina Franca",
+    "country": "Italy",
+    "flag": "🇮🇹",
+    "groupPhoto": "",
+    "students": [
+      "Raffaella"
+    ]
+  },
+  {
+    "school": "Școala Gimnazială Nr. 8",
+    "city": "Suceava",
+    "country": "Romania",
+    "flag": "🇷🇴",
+    "groupPhoto": "",
+    "students": [
+      "Mihaela"
+    ]
+  },
+  {
+    "school": "Bandırma Yavuz Sultan Selim Anadolu Lisesi",
+    "city": "Bandırma",
+    "country": "Türkiye",
+    "flag": "🇹🇷",
+    "groupPhoto": "",
+    "students": [
+      "Büşra"
+    ]
+  },
+  {
+    "school": "Základní škola Mělník",
+    "city": "Mělník",
+    "country": "Czechia",
+    "flag": "🇨🇿",
+    "groupPhoto": "",
+    "students": [
+      "Lucie"
+    ]
+  }
 ];
-
 
 let teamsOpen = false;
 
-function toggleTeams() {
+function teamsToggle() {
   teamsOpen = !teamsOpen;
   document.getElementById('teams-panel').classList.toggle('open', teamsOpen);
-  // Close the heritage sites panel if open
   if (teamsOpen) {
     document.getElementById('sites-panel').classList.remove('open');
     document.getElementById('instruction').style.opacity = '0';
@@ -3132,85 +3171,112 @@ function toggleTeams() {
   }
 }
 
-function buildSelector() {
-  const sel = document.getElementById('team-selector');
-  TEAMS.forEach((t, i) => {
-    const opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = t.flag + '  ' + t.country;
-    sel.appendChild(opt);
+const SILHOUETTE = `<svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="32" r="22"/>
+  <ellipse cx="50" cy="95" rx="38" ry="30"/>
+</svg>`;
+
+function buildSchoolList() {
+  const listEl = document.getElementById('school-list-view');
+  listEl.innerHTML = '';
+  SCHOOLS.forEach((s, i) => {
+    const n = s.students.length;
+    const div = document.createElement('div');
+    div.className = 'school-list-item';
+    div.innerHTML = `
+      <div class="sli-flag">${s.flag}</div>
+      <div class="sli-info">
+        <div class="sli-name">${s.school}</div>
+        <div class="sli-location">${s.city}, ${s.country}</div>
+      </div>
+      <div class="sli-count">${n} student${n!==1?'s':''}</div>
+      <div class="sli-arrow">→</div>`;
+    div.onclick = () => showSchoolDetail(i);
+    listEl.appendChild(div);
   });
-  renderTeam(0);
 }
 
-function renderTeam(idx) {
-  const team = TEAMS[idx];
-  const body = document.getElementById('team-body');
+function showSchoolList() {
+  document.getElementById('school-list-view').style.display = 'block';
+  document.getElementById('school-detail-view').classList.remove('active');
+  document.getElementById('tp-title').textContent = 'Meet the Teams';
+}
 
-  // Group photo
-  const groupPhotoHtml = team.groupPhoto
-    ? `<img src="${team.groupPhoto}" alt="${team.country} team photo" style="width:100%;height:100%;object-fit:cover;">`
-    : `<div class="group-photo-placeholder">
-        <div class="ph-icon">📷</div>
-        <span>Group Photo</span>
+function showSchoolDetail(idx) {
+  const s = SCHOOLS[idx];
+  document.getElementById('school-list-view').style.display = 'none';
+  document.getElementById('school-detail-view').classList.add('active');
+  document.getElementById('tp-title').textContent = s.country;
+
+  const groupPhotoHtml = s.groupPhoto
+    ? `<img src="${s.groupPhoto}" alt="${s.school} group photo" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sd-group-placeholder',innerHTML:'<div class=\\'ph-cam\\'>📷</div><span>Photo unavailable</span>'}));">`
+    : `<div class="sd-group-placeholder">
+         <div class="ph-cam">📷</div>
+         <span>Group Photo Coming Soon</span>
        </div>`;
 
-  // Member silhouette SVG
-  const silhouette = `<svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="32" r="22"/>
-    <ellipse cx="50" cy="95" rx="38" ry="30"/>
-  </svg>`;
-
-  // Members grid
-  const membersHtml = team.members.map(m => {
-    const photoHtml = m.photo
-      ? `<img class="member-photo" src="${m.photo}" alt="${m.name}">`
-      : `<div class="member-photo-placeholder">${silhouette}</div>`;
+  const membersHtml = s.students.map(name => {
+    const bio = (s.bios && s.bios[name]) ? s.bios[name] : 'Bio coming soon.';
+    const photo = (s.photos && s.photos[name]) ? s.photos[name] : '';
+    const photoHtml = photo
+      ? `<img class="member-photo" src="${photo}" alt="${name}">`
+      : `<div class="member-silhouette">${SILHOUETTE}</div>`;
     return `
       <div class="member-card">
         ${photoHtml}
-        <div class="member-info">
-          <div class="member-name">${m.name}</div>
-        </div>
-        <div class="member-tooltip">
-          <div class="tooltip-name">${m.name}</div>
-          <div class="tooltip-role">${m.role}</div>
+        <div class="member-name-strip">${name}</div>
+        <div class="member-overlay">
+          <div class="ov-name">${name}</div>
+          <div class="ov-bio">${bio}</div>
         </div>
       </div>`;
   }).join('');
 
-  body.innerHTML = `
-    <div class="team-school">${team.school}</div>
-    <div class="group-photo-wrap">${groupPhotoHtml}</div>
-    <div class="members-label">Team Members</div>
-    <div class="members-grid">${membersHtml}</div>
+  document.getElementById('sd-body').innerHTML = `
+    <div class="sd-flag">${s.flag}</div>
+    <div class="sd-school-name">${s.school}</div>
+    <div class="sd-location">${s.city}, ${s.country}</div>
+    <div class="sd-group-photo">${groupPhotoHtml}</div>
+    <div class="sd-members-label">Team Members</div>
+    <div class="sd-members-grid">${membersHtml}</div>
   `;
 }
 
-// Init on load
-buildSelector();
+// Init after DOM ready
+document.addEventListener("DOMContentLoaded", function() {
+  buildSchoolList();
+});
 
 </script>
 
+
 <!-- ===== TEAMS TAB ===== -->
-<div id="teams-tab" onclick="toggleTeams()">
+<div id="teams-tab" onclick="teamsToggle()">
   <span class="tab-icon">👥</span>
   Project Teams
 </div>
 
 <!-- ===== TEAMS PANEL ===== -->
 <div id="teams-panel">
-  <div class="teams-header">
-    <div class="teams-title">E-Twinning Project</div>
-    <div class="teams-headline">Meet the Teams</div>
-    <button class="close-teams" onclick="toggleTeams()">✕</button>
+
+  <div class="tp-header">
+    <div class="tp-eyebrow">E-Twinning Project</div>
+    <div class="tp-title" id="tp-title">Meet the Teams</div>
+    <button class="tp-close" onclick="teamsToggle()">✕</button>
   </div>
-  <div class="team-selector-wrap">
-    <select class="team-selector" id="team-selector" onchange="renderTeam(this.value)">
-    </select>
-    <span class="selector-arrow">▾</span>
+
+  <!-- School list -->
+  <div id="school-list-view">
   </div>
-  <div class="team-body" id="team-body"></div>
+
+  <!-- School detail (hidden until school clicked) -->
+  <div id="school-detail-view">
+    <div class="sd-back" onclick="showSchoolList()">
+      <span class="sd-back-arrow">←</span> All Schools
+    </div>
+    <div class="sd-body" id="sd-body"></div>
+  </div>
+
 </div>
 
 </body>
