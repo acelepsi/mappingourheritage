@@ -407,6 +407,51 @@
     color: var(--parchment); opacity: 0.72; line-height: 1.4;
   }
 
+
+  /* ===== COUNTRY NAV ===== */
+  #country-nav-tab {
+    position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+    z-index: 150; writing-mode: vertical-rl;
+    background: linear-gradient(180deg, #1c1910 0%, #141108 100%);
+    border: 1px solid rgba(201,168,76,0.25); border-right: none;
+    padding: 18px 10px; cursor: pointer;
+    font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold); transition: all 0.25s;
+    border-radius: 6px 0 0 6px; box-shadow: -3px 0 20px rgba(0,0,0,0.4);
+    display: flex; align-items: center; gap: 10px; user-select: none;
+  }
+  #country-nav-tab:hover {
+    background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.5);
+    color: var(--gold-light); padding-right: 14px;
+  }
+  #country-nav-tab .tab-icon { writing-mode: horizontal-tb; font-size: 15px; margin-bottom: 4px; }
+  #country-nav-panel {
+    position: fixed; right: 0; top: 0; width: 260px; height: 100vh;
+    background: linear-gradient(160deg, #1c1910 0%, #100e08 100%);
+    border-left: 1px solid rgba(201,168,76,0.2);
+    z-index: 250; display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: -6px 0 40px rgba(0,0,0,0.6);
+    transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  #country-nav-panel.open { transform: translateX(0); }
+  .cn-header { padding: 22px 24px 16px; border-bottom: 1px solid rgba(201,168,76,0.12); flex-shrink: 0; position: relative; }
+  .cn-eyebrow { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.55; margin-bottom: 3px; }
+  .cn-title { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 900; color: var(--parchment); }
+  .cn-close { position: absolute; top: 20px; right: 18px; background: none; border: 1px solid rgba(201,168,76,0.3); color: var(--gold); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .cn-close:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
+  .cn-list { flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.2) transparent; padding: 10px 0 24px; }
+  .cn-item { display: flex; align-items: center; gap: 12px; padding: 12px 24px; cursor: pointer; border-bottom: 1px solid rgba(201,168,76,0.07); transition: background 0.2s; position: relative; }
+  .cn-item::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: var(--gold); transform: scaleY(0); transition: transform 0.2s; transform-origin: center; }
+  .cn-item:hover { background: rgba(201,168,76,0.07); }
+  .cn-item:hover::after, .cn-item.active::after { transform: scaleY(1); }
+  .cn-item.active { background: rgba(201,168,76,0.1); }
+  .cn-flag { font-size: 22px; flex-shrink: 0; line-height: 1; }
+  .cn-info { flex: 1; min-width: 0; }
+  .cn-name { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 600; color: var(--parchment); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cn-count { font-size: 10px; color: var(--gold); opacity: 0.5; font-style: italic; }
+  .cn-arrow { color: var(--gold); opacity: 0.2; font-size: 12px; flex-shrink: 0; transition: all 0.2s; }
+  .cn-item:hover .cn-arrow { opacity: 0.7; transform: translateX(-3px); }
+
 </style>
 </head>
 <body>
@@ -1244,7 +1289,7 @@
 <path class="country" d="M 648.1,180.5 L 647.8,180.4 L 648.4,180.0 L 648.1,180.5 Z"/>
 <path class="country" d="M 507.0,84.4 L 509.3,83.1 L 510.9,83.9 L 512.3,82.7 L 514.0,82.7 L 514.5,83.6 L 516.2,84.1 L 515.6,85.5 L 517.4,86.5 L 517.7,87.8 L 515.9,89.6 L 516.2,91.0 L 515.2,91.3 L 513.5,90.0 L 513.5,88.5 L 511.5,89.3 L 511.7,88.0 L 510.3,87.9 L 508.7,85.8 L 507.7,86.0 L 507.0,84.4 Z"/>
 <path class="country" d="M 615.4,119.7 L 615.1,118.4 L 611.1,116.0 L 611.6,115.3 L 615.5,116.6 L 619.0,116.8 L 622.1,119.1 L 624.7,118.4 L 626.9,119.3 L 626.8,120.5 L 628.9,121.5 L 628.3,122.7 L 629.7,123.9 L 629.1,124.8 L 625.8,123.3 L 624.6,124.2 L 620.7,124.5 L 618.9,122.8 L 616.1,123.4 L 615.3,123.0 L 616.0,121.9 L 615.4,119.7 Z"/>
-<path class="country" d="M 557.1,121.7 L 558.6,120.5 L 559.1,120.9 L 561.9,119.8 L 563.9,122.3 L 563.1,124.4 L 561.2,124.4 L 559.9,125.4 L 558.2,125.5 L 556.9,124.1 L 557.1,121.7 Z"/>
+<path id="c-north-macedonia" class="country has-sites" d="M 557.1,121.7 L 558.6,120.5 L 559.1,120.9 L 561.9,119.8 L 563.9,122.3 L 563.1,124.4 L 561.2,124.4 L 559.9,125.4 L 558.2,125.5 L 556.9,124.1 L 557.1,121.7 Z" data-country="North Macedonia"/>
 <path class="country" d="M 557.1,121.7 L 556.9,124.1 L 558.4,126.2 L 557.4,128.2 L 556.4,128.6 L 556.7,129.2 L 556.1,129.9 L 553.6,127.1 L 554.1,127.3 L 553.6,126.2 L 554.2,125.2 L 554.0,122.8 L 554.5,122.7 L 553.5,120.5 L 554.7,118.8 L 556.9,120.4 L 557.1,121.7 Z"/>
 <path class="country" d="M 625.0,123.9 L 626.3,123.3 L 629.2,124.8 L 629.7,123.9 L 628.3,122.5 L 629.0,121.6 L 629.8,121.8 L 631.3,123.8 L 632.9,124.2 L 634.9,121.8 L 637.6,126.2 L 639.5,126.8 L 640.0,127.7 L 638.6,127.2 L 637.5,128.0 L 636.9,130.3 L 637.2,131.1 L 636.9,131.0 L 636.3,132.3 L 636.0,131.5 L 635.8,134.2 L 635.0,134.3 L 633.3,132.7 L 634.1,132.2 L 633.6,131.2 L 634.3,130.8 L 633.3,129.6 L 629.2,132.6 L 628.9,131.5 L 629.5,131.4 L 628.8,130.7 L 629.2,130.2 L 626.6,128.7 L 627.4,128.5 L 627.7,127.8 L 626.5,127.0 L 626.0,126.1 L 626.7,125.4 L 625.2,124.7 L 625.6,124.4 L 625.0,123.9 Z"/>
 <path class="country" d="M 628.2,132.7 L 626.2,132.2 L 624.4,129.7 L 627.2,130.2 L 628.2,132.7 Z"/>
@@ -1253,18 +1298,18 @@
 <path id="c-turkey" class="country has-sites" d="M 577.8,121.3 L 578.4,123.0 L 580.9,124.1 L 580.5,124.9 L 576.5,125.0 L 572.7,128.4 L 572.8,127.4 L 574.5,126.4 L 572.4,126.2 L 573.2,125.1 L 573.1,124.0 L 574.0,123.6 L 573.2,122.0 L 575.1,120.9 L 576.5,121.6 L 577.8,121.3 Z" data-country="Turkey"/>
 <path id="c-turkey" class="country has-sites" d="M 572.3,128.0 L 571.3,128.1 L 572.3,128.0 Z" data-country="Turkey"/>
 <path id="c-turkey" class="country has-sites" d="M 576.8,126.2 L 576.5,126.3 L 576.8,126.2 Z" data-country="Turkey"/>
-<path class="country" d="M 495.0,116.0 L 496.1,116.5 L 496.0,117.3 L 498.4,118.3 L 500.8,118.7 L 502.3,118.1 L 503.7,118.6 L 504.0,119.6 L 505.6,119.9 L 508.8,119.6 L 509.2,120.0 L 508.7,120.4 L 508.9,121.6 L 502.0,125.6 L 502.4,126.1 L 501.6,126.4 L 499.1,130.3 L 499.6,132.2 L 500.7,133.1 L 498.6,134.5 L 497.6,136.6 L 498.0,137.1 L 495.4,138.0 L 494.1,140.1 L 487.8,140.2 L 485.6,141.3 L 484.4,142.7 L 483.2,142.0 L 482.2,140.5 L 482.8,139.5 L 482.3,139.9 L 481.0,138.2 L 479.4,138.6 L 479.1,137.1 L 480.7,135.0 L 479.6,134.2 L 480.6,132.1 L 479.0,129.7 L 480.5,129.7 L 480.9,128.5 L 480.4,127.9 L 481.1,127.3 L 480.7,124.9 L 482.8,122.8 L 481.8,122.5 L 481.6,121.4 L 477.3,121.9 L 477.2,120.6 L 475.3,121.6 L 475.3,120.8 L 476.0,119.9 L 475.4,120.3 L 476.0,119.6 L 475.2,119.5 L 475.7,118.6 L 474.9,119.2 L 475.3,118.1 L 474.2,117.9 L 474.4,116.9 L 475.5,116.1 L 477.2,116.3 L 476.9,115.3 L 478.7,114.4 L 480.4,115.6 L 483.7,114.9 L 487.6,116.0 L 490.1,115.5 L 491.6,116.2 L 495.0,116.0 Z"/>
-<path class="country" d="M 450.2,169.4 L 450.1,170.1 L 449.6,169.8 L 450.2,169.4 Z"/>
-<path class="country" d="M 457.2,168.8 L 456.7,169.8 L 456.1,169.2 L 456.4,168.4 L 457.2,168.4 L 457.2,168.8 Z"/>
-<path class="country" d="M 451.9,168.3 L 452.5,168.6 L 452.1,168.9 L 451.9,168.3 Z"/>
-<path class="country" d="M 454.4,168.5 L 453.6,168.9 L 453.0,167.8 L 455.2,167.1 L 454.4,168.5 Z"/>
-<path class="country" d="M 461.2,166.6 L 461.6,166.8 L 461.3,168.2 L 459.7,168.7 L 460.5,168.2 L 461.2,166.6 Z"/>
-<path class="country" d="M 450.7,166.3 L 450.5,167.5 L 450.0,166.5 L 450.7,166.3 Z"/>
-<path class="country" d="M 462.5,165.0 L 462.5,165.8 L 461.5,166.2 L 462.5,165.0 Z"/>
-<path class="country" d="M 504.2,133.3 L 503.8,133.5 L 504.2,133.3 Z"/>
-<path class="country" d="M 504.5,131.9 L 503.9,132.8 L 503.4,132.6 L 504.5,131.9 Z"/>
-<path class="country" d="M 509.3,129.4 L 509.6,129.8 L 508.5,131.2 L 506.5,130.1 L 508.8,128.7 L 508.7,129.3 L 509.3,129.4 Z"/>
-<path class="country" d="M 512.0,128.8 L 510.6,128.5 L 512.0,128.8 Z"/>
+<path id="c-spain" class="country has-sites" d="M 495.0,116.0 L 496.1,116.5 L 496.0,117.3 L 498.4,118.3 L 500.8,118.7 L 502.3,118.1 L 503.7,118.6 L 504.0,119.6 L 505.6,119.9 L 508.8,119.6 L 509.2,120.0 L 508.7,120.4 L 508.9,121.6 L 502.0,125.6 L 502.4,126.1 L 501.6,126.4 L 499.1,130.3 L 499.6,132.2 L 500.7,133.1 L 498.6,134.5 L 497.6,136.6 L 498.0,137.1 L 495.4,138.0 L 494.1,140.1 L 487.8,140.2 L 485.6,141.3 L 484.4,142.7 L 483.2,142.0 L 482.2,140.5 L 482.8,139.5 L 482.3,139.9 L 481.0,138.2 L 479.4,138.6 L 479.1,137.1 L 480.7,135.0 L 479.6,134.2 L 480.6,132.1 L 479.0,129.7 L 480.5,129.7 L 480.9,128.5 L 480.4,127.9 L 481.1,127.3 L 480.7,124.9 L 482.8,122.8 L 481.8,122.5 L 481.6,121.4 L 477.3,121.9 L 477.2,120.6 L 475.3,121.6 L 475.3,120.8 L 476.0,119.9 L 475.4,120.3 L 476.0,119.6 L 475.2,119.5 L 475.7,118.6 L 474.9,119.2 L 475.3,118.1 L 474.2,117.9 L 474.4,116.9 L 475.5,116.1 L 477.2,116.3 L 476.9,115.3 L 478.7,114.4 L 480.4,115.6 L 483.7,114.9 L 487.6,116.0 L 490.1,115.5 L 491.6,116.2 L 495.0,116.0 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 450.2,169.4 L 450.1,170.1 L 449.6,169.8 L 450.2,169.4 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 457.2,168.8 L 456.7,169.8 L 456.1,169.2 L 456.4,168.4 L 457.2,168.4 L 457.2,168.8 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 451.9,168.3 L 452.5,168.6 L 452.1,168.9 L 451.9,168.3 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 454.4,168.5 L 453.6,168.9 L 453.0,167.8 L 455.2,167.1 L 454.4,168.5 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 461.2,166.6 L 461.6,166.8 L 461.3,168.2 L 459.7,168.7 L 460.5,168.2 L 461.2,166.6 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 450.7,166.3 L 450.5,167.5 L 450.0,166.5 L 450.7,166.3 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 462.5,165.0 L 462.5,165.8 L 461.5,166.2 L 462.5,165.0 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 504.2,133.3 L 503.8,133.5 L 504.2,133.3 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 504.5,131.9 L 503.9,132.8 L 503.4,132.6 L 504.5,131.9 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 509.3,129.4 L 509.6,129.8 L 508.5,131.2 L 506.5,130.1 L 508.8,128.7 L 508.7,129.3 L 509.3,129.4 Z" data-country="Spain"/>
+<path id="c-spain" class="country has-sites" d="M 512.0,128.8 L 510.6,128.5 L 512.0,128.8 Z" data-country="Spain"/>
 <path class="country" d="M 783.7,186.1 L 785.1,188.4 L 785.6,187.8 L 786.0,188.1 L 785.6,189.6 L 786.5,190.7 L 788.0,191.3 L 789.1,190.4 L 790.6,191.4 L 789.9,192.0 L 791.5,193.3 L 790.6,194.4 L 788.9,194.2 L 789.1,194.8 L 788.5,195.3 L 792.0,197.1 L 792.1,198.3 L 795.9,202.1 L 796.3,203.7 L 796.8,203.4 L 798.4,204.8 L 797.6,205.6 L 799.1,207.1 L 798.5,207.8 L 798.8,208.2 L 798.4,209.2 L 796.8,209.8 L 795.9,209.0 L 795.1,209.3 L 794.4,209.7 L 794.6,211.0 L 792.4,210.2 L 792.2,209.7 L 793.1,209.1 L 793.3,207.9 L 792.9,207.5 L 793.4,205.9 L 791.0,203.5 L 791.2,201.0 L 788.8,198.2 L 787.0,197.9 L 786.2,199.2 L 785.2,199.7 L 783.6,198.5 L 780.9,200.7 L 780.2,200.4 L 781.0,199.0 L 780.6,197.9 L 781.5,196.2 L 781.3,194.6 L 779.1,194.7 L 779.3,192.8 L 778.7,192.1 L 778.2,192.6 L 778.1,192.2 L 778.5,191.0 L 779.6,190.7 L 779.2,190.6 L 779.8,189.4 L 781.0,188.7 L 781.3,189.8 L 782.7,189.9 L 782.8,188.4 L 782.0,186.6 L 782.5,185.9 L 783.7,186.1 Z"/>
 <path class="country" d="M 722.8,120.5 L 722.9,121.1 L 717.7,123.5 L 716.9,124.8 L 713.5,124.9 L 712.0,127.3 L 710.2,127.5 L 709.9,126.3 L 708.9,127.0 L 707.9,126.7 L 708.0,127.4 L 705.5,128.5 L 705.1,130.5 L 701.4,130.8 L 700.6,131.5 L 700.1,130.9 L 699.3,131.2 L 698.5,130.0 L 696.6,130.8 L 695.8,130.0 L 692.5,130.3 L 692.3,129.5 L 693.1,128.1 L 694.5,127.8 L 695.9,128.5 L 695.8,128.9 L 697.2,127.6 L 699.2,128.1 L 700.5,126.9 L 701.1,127.2 L 701.0,126.4 L 701.7,126.7 L 703.2,125.6 L 700.5,124.9 L 700.4,124.2 L 699.6,124.2 L 699.1,122.9 L 698.4,124.5 L 697.7,124.5 L 696.6,124.0 L 696.3,123.2 L 694.9,123.0 L 697.9,120.6 L 696.8,120.1 L 698.3,118.2 L 700.8,118.4 L 704.2,119.7 L 704.4,117.3 L 706.1,116.5 L 710.1,118.2 L 713.8,117.5 L 719.9,118.2 L 720.6,119.5 L 722.0,119.6 L 722.8,120.5 Z"/>
 <path class="country" d="M 699.4,128.6 L 699.1,128.8 L 699.4,128.6 Z"/>
@@ -1294,7 +1339,7 @@
 <path class="country" d="M 563.5,97.8 L 564.3,97.2 L 568.2,97.8 L 569.2,98.8 L 572.7,97.6 L 573.1,96.7 L 574.8,96.8 L 578.4,103.1 L 578.0,107.4 L 579.8,108.8 L 582.1,108.2 L 582.3,110.3 L 580.6,110.9 L 580.9,109.8 L 580.2,109.9 L 580.4,110.6 L 580.0,111.1 L 580.5,111.0 L 579.9,111.2 L 579.9,111.8 L 580.3,111.2 L 579.5,112.4 L 579.4,114.6 L 575.1,112.9 L 570.6,115.0 L 563.6,114.2 L 564.0,113.3 L 562.4,111.8 L 563.2,111.4 L 562.3,110.8 L 561.5,111.7 L 559.4,110.5 L 559.7,109.2 L 557.7,107.8 L 557.7,106.7 L 556.2,105.3 L 558.7,104.6 L 561.1,99.6 L 563.5,97.8 Z"/>
 <path class="country" d="M 563.5,97.8 L 561.1,99.6 L 558.5,104.8 L 554.3,105.1 L 551.1,106.8 L 548.2,105.9 L 544.7,102.3 L 545.8,101.7 L 545.6,100.1 L 546.4,99.5 L 545.6,99.0 L 547.4,98.8 L 547.7,97.5 L 549.5,98.6 L 551.9,98.5 L 552.3,97.4 L 554.5,96.7 L 555.4,97.1 L 556.9,95.4 L 559.5,95.3 L 560.4,96.2 L 561.9,95.9 L 563.5,97.8 Z"/>
 <path class="country" d="M 562.6,93.1 L 561.4,96.0 L 557.0,95.4 L 555.4,97.1 L 554.5,96.7 L 552.3,97.4 L 551.9,98.5 L 549.3,98.6 L 547.4,97.5 L 546.8,96.1 L 547.7,94.0 L 549.2,94.0 L 551.5,91.4 L 553.2,91.7 L 554.0,90.9 L 555.0,92.6 L 559.1,91.5 L 562.6,93.1 Z"/>
-<path class="country" d="M 552.3,91.3 L 551.6,89.5 L 549.0,88.7 L 549.2,87.8 L 546.9,87.3 L 547.3,88.2 L 546.3,88.7 L 545.0,87.4 L 545.4,86.3 L 542.7,85.8 L 542.1,84.7 L 541.1,85.4 L 541.7,83.6 L 540.5,81.2 L 541.0,80.0 L 540.4,78.6 L 540.7,77.7 L 539.2,76.4 L 540.1,74.6 L 539.6,72.5 L 540.5,73.0 L 540.6,71.8 L 539.4,71.5 L 550.4,67.1 L 552.1,67.8 L 551.1,67.6 L 551.6,69.0 L 552.5,69.4 L 563.4,69.2 L 565.1,70.3 L 566.5,76.9 L 564.3,79.0 L 565.7,79.9 L 565.4,82.1 L 567.1,85.4 L 566.5,85.6 L 567.0,86.8 L 563.0,91.0 L 563.5,93.4 L 560.0,91.6 L 556.4,91.8 L 555.7,92.7 L 554.9,92.6 L 554.9,91.8 L 554.0,90.9 L 553.2,91.7 L 552.3,91.3 Z"/>
+<path id="c-poland" class="country has-sites" d="M 552.3,91.3 L 551.6,89.5 L 549.0,88.7 L 549.2,87.8 L 546.9,87.3 L 547.3,88.2 L 546.3,88.7 L 545.0,87.4 L 545.4,86.3 L 542.7,85.8 L 542.1,84.7 L 541.1,85.4 L 541.7,83.6 L 540.5,81.2 L 541.0,80.0 L 540.4,78.6 L 540.7,77.7 L 539.2,76.4 L 540.1,74.6 L 539.6,72.5 L 540.5,73.0 L 540.6,71.8 L 539.4,71.5 L 550.4,67.1 L 552.1,67.8 L 551.1,67.6 L 551.6,69.0 L 552.5,69.4 L 563.4,69.2 L 565.1,70.3 L 566.5,76.9 L 564.3,79.0 L 565.7,79.9 L 565.4,82.1 L 567.1,85.4 L 566.5,85.6 L 567.0,86.8 L 563.0,91.0 L 563.5,93.4 L 560.0,91.6 L 556.4,91.8 L 555.7,92.7 L 554.9,92.6 L 554.9,91.8 L 554.0,90.9 L 553.2,91.7 L 552.3,91.3 Z" data-country="Poland"/>
 <path class="country" d="M 479.9,66.0 L 479.0,67.5 L 478.0,67.8 L 478.6,68.2 L 477.3,68.9 L 479.6,70.5 L 480.5,69.1 L 481.6,70.9 L 483.0,71.0 L 482.3,71.4 L 483.1,73.2 L 482.7,74.1 L 483.4,75.9 L 482.0,78.7 L 482.4,79.4 L 480.7,79.8 L 480.6,79.0 L 480.5,79.7 L 478.9,79.9 L 477.7,81.1 L 476.6,80.8 L 477.0,81.4 L 476.3,82.1 L 474.4,82.6 L 472.7,82.8 L 473.7,81.7 L 473.4,81.4 L 471.8,82.2 L 473.4,80.9 L 471.3,81.3 L 471.5,80.4 L 472.9,79.6 L 470.9,79.5 L 473.0,79.2 L 472.4,78.4 L 473.2,77.7 L 475.7,77.3 L 475.2,76.8 L 472.4,77.8 L 473.6,76.9 L 474.2,75.1 L 475.3,74.7 L 471.7,73.8 L 472.2,73.5 L 471.7,73.2 L 473.1,73.0 L 472.5,72.2 L 473.4,71.7 L 472.4,71.7 L 472.8,71.5 L 472.7,70.6 L 471.9,70.6 L 471.9,70.0 L 476.4,70.1 L 475.9,69.4 L 477.4,68.0 L 475.6,67.8 L 476.9,67.1 L 476.5,66.3 L 477.0,65.5 L 478.3,65.1 L 478.6,65.8 L 478.8,65.0 L 479.1,65.7 L 478.7,66.5 L 479.3,66.0 L 479.1,64.9 L 479.8,64.9 L 479.5,64.4 L 480.7,65.1 L 479.9,66.0 Z"/>
 <path class="country" d="M 472.3,71.3 L 471.5,71.2 L 472.3,71.3 Z"/>
 <path class="country" d="M 471.4,80.7 L 471.0,80.8 L 471.4,80.7 Z"/>
@@ -1431,7 +1476,7 @@
 <path class="country" d="M 540.9,110.6 L 541.3,110.8 L 540.9,110.6 Z"/>
 <path class="country" d="M 540.3,111.0 L 539.8,109.0 L 540.3,111.0 Z"/>
 <path class="country" d="M 540.9,109.9 L 540.1,109.4 L 540.4,108.7 L 540.9,109.9 Z"/>
-<path class="country" d="M 537.9,107.9 L 538.6,107.2 L 537.4,105.7 L 537.9,105.0 L 537.1,104.6 L 538.1,103.7 L 540.4,104.2 L 541.8,103.1 L 544.5,103.1 L 544.7,102.3 L 545.3,102.4 L 545.8,103.6 L 543.4,104.9 L 543.5,106.4 L 542.4,106.9 L 542.6,107.9 L 541.1,107.9 L 540.5,107.1 L 539.9,107.8 L 537.9,107.9 Z"/>
+<path id="c-slovenia" class="country has-sites" d="M 537.9,107.9 L 538.6,107.2 L 537.4,105.7 L 537.9,105.0 L 537.1,104.6 L 538.1,103.7 L 540.4,104.2 L 541.8,103.1 L 544.5,103.1 L 544.7,102.3 L 545.3,102.4 L 545.8,103.6 L 543.4,104.9 L 543.5,106.4 L 542.4,106.9 L 542.6,107.9 L 541.1,107.9 L 540.5,107.1 L 539.9,107.8 L 537.9,107.9 Z" data-country="Slovenia"/>
 <path class="country" d="M 641.1,179.0 L 641.1,176.4 L 641.4,176.6 L 641.6,175.2 L 642.4,174.7 L 643.3,175.5 L 643.4,178.2 L 642.6,179.6 L 641.1,179.0 Z"/>
 <path class="country" d="M 641.1,179.0 L 641.6,179.6 L 643.1,179.5 L 642.4,180.4 L 643.2,180.5 L 646.0,184.5 L 653.3,185.2 L 654.5,187.4 L 652.7,193.3 L 644.4,196.2 L 636.2,197.5 L 633.8,198.7 L 631.0,202.2 L 629.8,201.3 L 625.5,200.8 L 622.0,201.2 L 620.6,200.6 L 619.9,201.1 L 619.9,203.0 L 618.9,203.9 L 618.2,202.1 L 617.7,201.5 L 617.7,202.0 L 617.5,200.8 L 615.3,198.5 L 613.2,193.9 L 610.4,192.2 L 608.8,190.0 L 608.1,187.3 L 608.7,186.1 L 606.8,181.9 L 604.0,180.2 L 603.2,178.7 L 603.5,177.7 L 597.8,168.8 L 596.0,168.6 L 597.1,164.6 L 600.2,165.1 L 602.0,163.0 L 604.1,162.6 L 605.5,161.0 L 602.7,157.8 L 608.8,155.7 L 612.1,156.3 L 616.9,159.1 L 624.1,165.1 L 631.8,165.8 L 632.4,167.2 L 634.7,167.4 L 635.8,169.5 L 635.6,170.1 L 636.8,170.4 L 637.0,170.7 L 636.4,170.7 L 637.2,171.6 L 637.7,171.5 L 639.3,173.1 L 638.8,173.0 L 639.5,174.2 L 638.9,175.2 L 641.1,179.0 Z"/>
 <path class="country" d="M 617.2,202.9 L 616.5,203.0 L 616.0,202.4 L 617.2,202.9 Z"/>
@@ -2639,59 +2684,137 @@
 <path class="country" d="M 641.0,176.0 L 641.0,176.5 L 641.0,176.0 Z"/>
     <!-- Site markers -->
     <!-- Istanbul -->
-    <circle class="site-dot" cx="580.5" cy="124.9" r="3"/>
-    <circle class="site-ring" cx="580.5" cy="124.9" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="580.5" cy="124.9" r="2"/>
+    
     <!-- Ephesus -->
-    <circle class="site-dot" cx="575.9" cy="135.9" r="3"/>
-    <circle class="site-ring" cx="575.9" cy="135.9" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="0.2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.2s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="575.9" cy="135.9" r="2"/>
+    
     <!-- Arslantepe -->
-    <circle class="site-dot" cx="606.6" cy="134.4" r="3"/>
-    <circle class="site-ring" cx="606.6" cy="134.4" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="0.4s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.4s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="606.6" cy="134.4" r="2"/>
+    
     <!-- Göreme -->
-    <circle class="site-dot" cx="596.8" cy="133.5" r="3"/>
-    <circle class="site-ring" cx="596.8" cy="133.5" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.6s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="596.8" cy="133.5" r="2"/>
+    
     <!-- Hattusha -->
-    <circle class="site-dot" cx="596.2" cy="128.5" r="3"/>
-    <circle class="site-ring" cx="596.2" cy="128.5" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="0.8s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.8s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="596.2" cy="128.5" r="2"/>
+    
     <!-- Divriği -->
-    <circle class="site-dot" cx="605.9" cy="130.8" r="3"/>
-    <circle class="site-ring" cx="605.9" cy="130.8" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.0s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.0s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="605.9" cy="130.8" r="2"/>
+    
     <!-- Safranbolu -->
-    <circle class="site-dot" cx="590.8" cy="124.0" r="3"/>
-    <circle class="site-ring" cx="590.8" cy="124.0" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.2s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="590.8" cy="124.0" r="2"/>
+    
     <!-- Selimiye/Edirne -->
-    <circle class="site-dot" cx="573.8" cy="122.4" r="3"/>
-    <circle class="site-ring" cx="573.8" cy="122.4" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.4s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="573.8" cy="122.4" r="2"/>
+    
     <!-- Ani -->
-    <circle class="site-dot" cx="621.0" cy="126.7" r="3"/>
-    <circle class="site-ring" cx="621.0" cy="126.7" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.6s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="621.0" cy="126.7" r="2"/>
+    
     <!-- Bursa/Cumalıkızık -->
-    <circle class="site-dot" cx="581.0" cy="127.9" r="3"/>
-    <circle class="site-ring" cx="581.0" cy="127.9" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.8s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="581.0" cy="127.9" r="2"/>
+    
     <!-- Çatalhöyük -->
-    <circle class="site-dot" cx="591.2" cy="136.9" r="3"/>
-    <circle class="site-ring" cx="591.2" cy="136.9" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="2.0s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.0s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="591.2" cy="136.9" r="2"/>
+    
     <!-- Diyarbakır -->
-    <circle class="site-dot" cx="611.8" cy="136.0" r="3"/>
-    <circle class="site-ring" cx="611.8" cy="136.0" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.2s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="611.8" cy="136.0" r="2"/>
+    
     <!-- Gordion -->
-    <circle class="site-dot" cx="589.6" cy="129.8" r="3"/>
-    <circle class="site-ring" cx="589.6" cy="129.8" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.4s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="589.6" cy="129.8" r="2"/>
+    
     <!-- Aphrodisias -->
-    <circle class="site-dot" cx="579.8" cy="136.8" r="3"/>
-    <circle class="site-ring" cx="579.8" cy="136.8" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.6s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="579.8" cy="136.8" r="2"/>
+    
     <!-- Pergamon -->
-    <circle class="site-dot" cx="575.5" cy="131.7" r="3"/>
-    <circle class="site-ring" cx="575.5" cy="131.7" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="2.8s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="2.8s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="575.5" cy="131.7" r="2"/>
+    
     <!-- Pamukkale -->
-    <circle class="site-dot" cx="580.9" cy="136.0" r="3"/>
-    <circle class="site-ring" cx="580.9" cy="136.0" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="3.0s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="3.0s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="580.9" cy="136.0" r="2"/>
+    
     <!-- Rome -->
-    <circle class="site-dot" cx="534.7" cy="121.6" r="3"/>
-    <circle class="site-ring" cx="534.7" cy="121.6" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="0.5s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="534.7" cy="121.6" r="2"/>
+    
     <!-- Thessaloniki -->
-    <circle class="site-dot" cx="563.8" cy="126.3" r="3"/>
-    <circle class="site-ring" cx="563.8" cy="126.3" r="3"><animate attributeName="r" from="3" to="7" dur="2.5s" begin="1.3s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.9" to="0" dur="2.5s" begin="1.3s" repeatCount="indefinite"/></circle>
+    <circle class="site-dot" cx="563.8" cy="126.3" r="2"/>
+    
+    <!-- The Ancient City of  -->
+    <circle class="site-dot" cx="572.9" cy="128.7" r="2"/>
+    
+    <!-- Xanthos-Letoon -->
+    <circle class="site-dot" cx="581.4" cy="141.5" r="2"/>
+    
+    <!-- Historic Centre of R -->
+    <circle class="site-dot" cx="534.7" cy="121.6" r="2"/>
+    
+    <!-- Archaeological Areas -->
+    <circle class="site-dot" cx="540.2" cy="125.8" r="2"/>
+    
+    <!-- The Trulli of Albero -->
+    <circle class="site-dot" cx="547.9" cy="125.7" r="2"/>
+    
+    <!-- The Dolomites (Le Do -->
+    <circle class="site-dot" cx="532.9" cy="103.3" r="2"/>
+    
+    <!-- The Sassi and the Pa -->
+    <circle class="site-dot" cx="546.1" cy="126.1" r="2"/>
+    
+    <!-- Venice and its Lagoo -->
+    <circle class="site-dot" cx="534.3" cy="108.0" r="2"/>
+    
+    <!-- Historic Centre of F -->
+    <circle class="site-dot" cx="531.3" cy="114.5" r="2"/>
+    
+    <!-- Opera dei Pupi (Pupp -->
+    <circle class="site-dot" cx="542.5" cy="139.0" r="2"/>
+    
+    <!-- Archaeological Area  -->
+    <circle class="site-dot" cx="537.7" cy="138.2" r="2"/>
+    
+    <!-- Paleochristian and B -->
+    <circle class="site-dot" cx="563.7" cy="126.3" r="2"/>
+    
+    <!-- Historic Centre of C -->
+    <circle class="site-dot" cx="486.7" cy="136.2" r="2"/>
+    
+    <!-- Cave of Altamira and -->
+    <circle class="site-dot" cx="488.6" cy="116.0" r="2"/>
+    
+    <!-- Historic Centre of K -->
+    <circle class="site-dot" cx="555.4" cy="88.9" r="2"/>
+    
+    <!-- Castle of the Teuton -->
+    <circle class="site-dot" cx="552.9" cy="70.9" r="2"/>
+    
+    <!-- Centennial Hall (Hal -->
+    <circle class="site-dot" cx="547.4" cy="84.3" r="2"/>
+    
+    <!-- Wooden Churches of S -->
+    <circle class="site-dot" cx="558.8" cy="91.2" r="2"/>
+    
+    <!-- Kurentovanje (Door-t -->
+    <circle class="site-dot" cx="544.1" cy="104.1" r="2"/>
+    
+    <!-- Škocjan Caves (Škocj -->
+    <circle class="site-dot" cx="538.9" cy="107.1" r="2"/>
+    
+    <!-- Kokino Megalithic Ob -->
+    <circle class="site-dot" cx="561.0" cy="120.2" r="2"/>
+    
+    <!-- Archaeological Site  -->
+    <circle class="site-dot" cx="561.0" cy="122.9" r="2"/>
+    
+    <!-- Marko\'s Towers (Mar -->
+    <circle class="site-dot" cx="559.8" cy="123.6" r="2"/>
+    
+    <!-- Kopachka (Dramche, P -->
+    <circle class="site-dot" cx="563.2" cy="121.5" r="2"/>
+    
+    <!-- Dlaboka Reka (Deep R -->
+    <circle class="site-dot" cx="557.0" cy="122.1" r="2"/>
+    
+    <!-- Natural and Cultural -->
+    <circle class="site-dot" cx="557.7" cy="124.9" r="2"/>
+    
   </svg>
 
   <div id="instruction">Hover over a glowing country · Click to explore its heritage sites</div>
@@ -2737,30 +2860,173 @@
 const DB = {
   "Italy": {
     display: "Italy",
-    sites: [{
-      name: "Colosseum", local: "Colosseo",
-      parent: "Part of the Historic Centre of Rome",
-      year: "1980 (Extended 1990)", category: "Cultural",
-      location: "Rome, Lazio (Central Italy)",
-      coords: "41.8902° N, 12.4922° E",
-      image: "https://cdn.mos.cms.futurecdn.net/BiNbcY5fXy9Lra47jqHKGK.jpg",
-      description: "Completed in AD 80 under the Flavian dynasty, the Colosseum is the largest ancient amphitheater ever built. It was designed to hold between 50,000 and 80,000 spectators who gathered to watch gladiatorial contests, mock sea battles, and animal hunts. Its innovative use of concrete and vaulted arches allowed for a massive tiered seating system (the cavea) and a complex underground network of tunnels (the hypogeum) used to hoist scenery and gladiators into the arena. Even in its partially ruined state due to earthquakes and stone-robbing, it remains an unparalleled architectural model for modern sports stadiums.",
-      links: [{ label: "UNESCO Official Page — Historic Centre of Rome", url: "https://whc.unesco.org/en/list/91" }],
-      note: "The Parco Archeologico del Colosseo website offers excellent 3D reconstructions of the hypogeum that are great for student research."
-    }]
+    sites: [
+    {
+      name: "Historic Centre of Rome, the Properties of the Holy", local: "",
+      parent: "Historic Centre of Rome, the Properties of the Holy",
+      year: "1980", category: "Cultural",
+      location: "Rome, Lazio",
+      coords: "41.8914° N, 12.4895° E",
+      image: "https://www.worldhistory.org/uploads/images/950.jpg",
+      description: "The Colosseum is the largest ancient amphitheatre ever built and remains the largest standing amphitheatre in the world today. Completed in 80 AD under Emperor Titus, it could hold between 50,000 and 80,000 spectators. It was used for gladiatorial contests, animal hunts, and mock sea battles. The structure is a masterpiece of Roman engineering, featuring the hypogeum (an underground network of tunnels and cages) and a complex system of vaulted arches and travertine stone. This inscription encompasses 2 monuments: Colosseum (Flavian Amphitheatre); Via dei Fori Imperiali.",
+      links: [{label: "Historic Centre of Rome", url: "https://whc.unesco.org/en/list/91"}]
+    },
+    {
+      name: "Archaeological Areas of Pompei", local: "",
+      parent: "Archaeological Areas of Pompei, Herculaneum and Torre",
+      year: "1997", category: "Cultural",
+      location: "Pompeii, Campania (near Naples)",
+      coords: "40.7512° N, 14.4869° E",
+      image: "https://tourismmedia.italia.it/is/image/mitur/20210311113056-pompei-shutterstock-1209687841-1?wid=800&hei=500&fit=constrain,1&fmt=webp",
+      description: "Pompeii provides an incomparable record of daily life in the Roman Empire at the moment it was frozen by the eruption of Mount Vesuvius in 79 AD. The city was buried under a thick layer of volcanic ash and pumice, preserving its streets, villas, public baths, and vibrant frescoes in extraordinary detail. Highlights include the Forum, the House of the Vettii, and the haunting plaster casts of the inhabitants who were unable to escape the catastrophe.",
+      links: [{label: "Archaeological Areas of Pompei", url: "https://whc.unesco.org/en/list/829"}]
+    },
+    {
+      name: "The Trulli of Alberobello (Rione Monti)", local: "",
+      parent: "The Trulli of Alberobello",
+      year: "1996", category: "Cultural",
+      location: "Alberobello, Puglia (Province of Bari)",
+      coords: "40.7828° N, 17.2371° E",
+      image: "https://images.visititaly.eu/uploads/articoli/paragrafo/20210604111910chiesa%20trullo%202.jpg",
+      description: "The Rione Monti is the largest and most famous district of Alberobello, containing over 1,000 trulli. These unique limestone dwellings are constructed using a prehistoric dry-stone technique (no mortar). They feature characteristic conical roofs finished with decorative pinnacles and mysterious white-painted symbols. Historically, this style of building allowed the local peasantry to quickly dismantle their homes to avoid property taxes imposed by the Kingdom of Naples.",
+      links: [{label: "The Trulli of Alberobello", url: "https://whc.unesco.org/en/list/787"}]
+    },
+    {
+      name: "The Dolomites (Le Dolomiti)", local: "",
+      parent: "The Dolomites",
+      year: "2009", category: "Natural",
+      location: "Northern Italian Alps (Trentino-Alto Adige,",
+      coords: "46.6104° N, 11.8400° E",
+      image: "https://cdn.britannica.com/00/188300-050-972ACBFB/Dolomites-Italian-Alps.jpg**",
+      description: "The Dolomites comprise a mountain range in the northern Italian Alps, featuring 18 peaks which rise above 3,000 meters. They are globally renowned for their vertical walls, sheer cliffs, and a high density of narrow, deep, and long valleys. Geologically, the range is unique for its carbonate rock (dolomite), which creates the Enrosadira phenomenon---a spectacular reddish-pink glow at sunrise and sunset. The site contains some of the best-preserved Mesozoic carbonate platform systems and fossil records in the world.",
+      links: [{label: "The Dolomites", url: "https://whc.unesco.org/en/list/1237"}]
+    },
+    {
+      name: "The Sassi and the Park of the Rupestrian Churches of Matera", local: "",
+      parent: "The Sassi and the Park of the Rupestrian Churches of",
+      year: "1993", category: "Cultural",
+      location: "Matera, Basilicata",
+      coords: "40.6667° N, 16.6111° E",
+      image: "https://tourismmedia.italia.it/is/image/mitur/20210310101218-shutterstock-1895214997-1?wid=800&hei=500&fit=constrain,1&fmt=webp",
+      description: "The Sassi represent one of the most outstanding intact examples of a troglodyte (cave-dwelling) settlement in the Mediterranean, occupied continuously since the Palaeolithic era. Carved into the calcarenite rock of a deep ravine, the site features a complex network of dwellings, cisterns, and over 150 rupestrian (rock-cut) churches. The architectural system is famous for using the roofs of lower houses as streets for the layers above, demonstrating an ingenious adaptation to the rugged topography.",
+      links: [{label: "The Sassi and the Park of the Rupestrian Churches of Matera", url: "https://whc.unesco.org/en/list/670"}]
+    },
+    {
+      name: "Venice and its Lagoon", local: "",
+      parent: "Venice and its Lagoon",
+      year: "1987", category: "Cultural",
+      location: "Venice, Veneto",
+      coords: "45.434° N, 12.3385° E",
+      image: "https://whc.unesco.org/uploads/thumbs/news_2043-1200-630-20191014144910.jpg",
+      description: "Founded in the 5th century by populations fleeing barbarian invasions, Venice is an architectural masterpiece spread across 118 small islands. The city became a major maritime power by the 10th century, serving as a crucial link between East and West. The site includes the historic center with its iconic Grand Canal, St. Mark\'s Basilica, and Doge\'s Palace, as well as the wider lagoon ecosystem featuring islands like Murano (glass making) and Burano (lace and colorful houses). It remains a unique example of human resilience and technical skill in mastering a semi-lacustral environment.",
+      links: [{label: "Venice and its Lagoon", url: "https://whc.unesco.org/en/list/394"}]
+    },
+    {
+      name: "Historic Centre of Florence (Firenze)", local: "",
+      parent: "Historic Centre of Florence",
+      year: "1982", category: "Cultural",
+      location: "Florence, Tuscany (Toscana)",
+      coords: "43.7731° N, 11.2560° E",
+      image: "https://tourismmedia.italia.it/is/image/mitur/20210309105449-firenze-toscana-gettyimages-479035945-2?wid=800&hei=500&fit=constrain,1&fmt=webp",
+      description: "Built on the site of a Roman settlement, Florence is the Cradle of the Renaissance. For centuries, under the patronage of the Medici family, it was the world\'s leading center for art and intellect. The city houses an extraordinary concentration of masterpieces, including the Duomo with Brunelleschi\'s revolutionary dome, the Uffizi Gallery, and the Ponte Vecchio. The historic center is defined by its 15th and 16th-century palaces and churches that represent the transition from the Middle Ages to the modern era through the revival of classical humanism.",
+      links: [{label: "Historic Centre of Florence", url: "https://whc.unesco.org/en/list/174"}]
+    },
+    {
+      name: "Opera dei Pupi (Puppet Theatre) - Syracuse", local: "",
+      parent: "Opera dei Pupi, Sicilian Puppet Theatre",
+      year: "2008", category: "Intangible Cultural Heritage",
+      location: "Syracuse (Ortigia), Sicily",
+      coords: "37.0608° N, 15.2936° E",
+      image: "https://figlidartecuticchio.com/en/wp-content/uploads/2024/04/oodp_13-1024x683-1.jpg",
+      description: "The Opera dei Pupi is a unique theatrical tradition that emerged in Sicily in the early 19th century. In Syracuse, this tradition is kept alive by families like the Vaccaro-Mauceri at the Piccolo Teatro dei Pupi. The performances typically depict medieval chivalric literature, such as the Orlando Furioso, featuring knights, saracens, and magical creatures. Unlike standard puppets, Sicilian pupi are controlled by heavy metal rods, allowing for the characteristic clattering sword fights. The Syracuse style is distinguished by its specific puppet size and handling techniques compared to the Palermo or Catania schools.",
+      links: []
+    },
+    {
+      name: "Archaeological Area of Agrigento (Valle dei Templi)", local: "",
+      parent: "Archaeological Area of Agrigento",
+      year: "1997", category: "Cultural",
+      location: "Agrigento, Sicily",
+      coords: "37.2903° N, 13.5861° E",
+      image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/5a/f0/30/caption.jpg?w=800&h=800&s=1",
+      description: "The Valley of the Temples is one of the most outstanding examples of Greater Greek (Magna Graecia) art and architecture. Founded as the colony of Akragas in the 6th century BC, the site features a series of Doric temples along a rocky ridge. The Temple of Concord is among the best-preserved Greek temples in the world, while the Temple of Olympian Zeus was one of the largest ever built in antiquity, famous for its colossal Atlas-like figures known as telamones.",
+      links: [{label: "Archaeological Area of Agrigento", url: "https://whc.unesco.org/en/list/831"}]
+    }
+    ]
   },
   "Greece": {
     display: "Greece",
-    sites: [{
-      name: "Arch of Galerius", local: "Kamara",
-      parent: "Part of the Paleochristian and Byzantine Monuments of Thessalonika",
+    sites: [
+    {
+      name: "Arch of Galerius (Kamara)", local: "Καμάρα",
+      parent: "Paleochristian and Byzantine Monuments of Thessalonika",
       year: "1988", category: "Cultural",
-      location: "Thessaloniki, Central Macedonia (Northern Greece)",
-      coords: "40.6333° N, 22.9519° E",
-      image: "https://www.aegeantrails.com/wp-content/uploads/2018/05/Thessaloniki_Slider03.jpg",
-      description: "Built in AD 303 to celebrate the victory of the Tetrarch Galerius over the Sassanid Persians, this triumphal arch was originally part of a massive imperial precinct that included a palace and a rotunda. The structure is famous for its intricate marble relief panels, which depict scenes of battle, imperial ceremonies, and the victory of the Roman legions. Today, while only three of the original eight pillars remain, it serves as one of the most popular meeting points in the city, standing as a physical bridge between Thessaloniki's Roman past and its modern urban life.",
-      links: [{ label: "UNESCO Official Page — Paleochristian and Byzantine Monuments of Thessalonika", url: "https://whc.unesco.org/en/list/456" }]
-    }]
+      location: "Thessaloniki, Central Macedonia",
+      coords: "40.6322° N, 22.9517° E",
+      image: "https://www.thessalonikitourism.gr/images/2019/02/01/karama1.png",
+      description: "The Arch of Galerius, known locally as Kamara, was built in 298-303 AD to celebrate Emperor Galerius' victory over the Sassanid Persians. It was originally an eight-pillared gateway (octopylon) connecting the imperial palace to the Rotunda. The surviving pillars feature intricate marble reliefs depicting battle scenes and the imperial family, serving as a prime example of late Roman triumphal architecture.",
+      links: [{label: "Byzantine Monuments of Thessalonika", url: "https://whc.unesco.org/en/list/456"}]
+    },
+    {
+      name: "Church of the Acheiropoietos", local: "Αχειροποίητος",
+      parent: "Paleochristian and Byzantine Monuments of Thessalonika",
+      year: "1988", category: "Cultural",
+      location: "Thessaloniki, Central Macedonia",
+      coords: "40.6347° N, 22.9472° E",
+      image: "https://thessaloniki.travel/wp-content/uploads/2021/10/acheiropoiitos.jpg",
+      description: "Built in the mid-5th century (c. 450-470 AD), the Acheiropoietos is one of the oldest and best-preserved Early Christian basilicas in Greece. Its name, meaning Made Without Hands, refers to a miraculous icon of the Virgin Mary once housed there. The three-aisled basilica features magnificent monolithic marble columns with Theodosian capitals and original 5th-century mosaics in the intrados of the arches.",
+      links: [{label: "Byzantine Monuments of Thessalonika", url: "https://whc.unesco.org/en/list/456"}]
+    },
+    {
+      name: "Church of the Holy Apostles", local: "Άγιοι Απόστολοι",
+      parent: "Paleochristian and Byzantine Monuments of Thessalonika",
+      year: "1988", category: "Cultural",
+      location: "Thessaloniki, Central Macedonia",
+      coords: "40.6431° N, 22.9386° E",
+      image: "https://static.wixstatic.com/media/37d0c7_50ad8b1730cb4286bf7f4de6f7aa5347~mv2.jpg/v1/fill/w_2500,h_1746,al_c/37d0c7_50ad8b1730cb4286bf7f4de6f7aa5347~mv2.jpg",
+      description: "A masterpiece of the Palaiologan Renaissance, this 14th-century church is renowned for its elaborate external brickwork and five-domed structure. Originally the katholikon of a monastery, it houses some of the last great Byzantine mosaics. Its interior displays a vertical architectural style emphasising height and light through its soaring central dome.",
+      links: [{label: "Byzantine Monuments of Thessalonika", url: "https://whc.unesco.org/en/list/456"}]
+    },
+    {
+      name: "Monastery of Vlatadon", local: "Μονή Βλατάδων",
+      parent: "Paleochristian and Byzantine Monuments of Thessalonika",
+      year: "1988", category: "Cultural",
+      location: "Ano Poli, Thessaloniki, Central Macedonia",
+      coords: "40.6433° N, 22.9544° E",
+      image: "https://www.religiousgreece.gr/sites/default/files/paragraph/images/2023-07/084_4.jpg",
+      description: "The Monastery of Vlatadon is the only Byzantine monastery in Thessaloniki to have remained continuously active since its foundation in the 14th century. Perched on the highest point of the Upper Town (Ano Poli), it offers a panoramic view of the Thermaic Gulf. Tradition holds it was built on the spot where the Apostle Paul preached during his second missionary journey. It is also famous for its resident peacocks and its significant collection of Byzantine icons and manuscripts.",
+      links: [{label: "Byzantine Monuments of Thessalonika", url: "https://whc.unesco.org/en/list/456"}]
+    },
+    {
+      name: "Rotunda of Galerius", local: "Ροτόντα",
+      parent: "Paleochristian and Byzantine Monuments of Thessalonika",
+      year: "1988", category: "Cultural",
+      location: "Thessaloniki, Central Macedonia",
+      coords: "40.6333° N, 22.9528° E",
+      image: "https://static.wixstatic.com/media/37d0c7_d399c063676042afa33e4251f9cbe903~mv2.jpg/v1/fill/w_2500,h_1655,al_c/37d0c7_d399c063676042afa33e4251f9cbe903~mv2.jpg",
+      description: "The Rotunda is one of the most iconic structures in Thessaloniki, featuring a massive dome with a diameter of 24.5 metres. Originally intended as a mausoleum for Emperor Galerius (c. 306 AD), it was converted into a Christian church and later a mosque during the Ottoman period, which added the city's only surviving minaret. Its interior is famed for its 4th-century gold-ground mosaics, among the earliest and finest examples of Christian wall mosaics in existence.",
+      links: [{label: "Byzantine Monuments of Thessalonika", url: "https://whc.unesco.org/en/list/456"}]
+    },
+    {
+      name: "Hagia Sophia of Thessaloniki", local: "Αγία Σοφία Θεσσαλονίκης",
+      parent: "Paleochristian and Byzantine Monuments of Thessalonika",
+      year: "1988", category: "Cultural",
+      location: "Thessaloniki, Central Macedonia",
+      coords: "40.6328° N, 22.9469° E",
+      image: "https://upload.wikimedia.org/wikipedia/commons/6/64/THESS_-_Aghia_Sophia_05.JPG",
+      description: "Built in the 7th century on the ruins of a massive 5th-century basilica, this church represents a transitional architectural phase from the domed basilica to the domed Greek-cross plan. The interior is famous for its stunning 9th-century mosaic of the Ascension in the dome and the Virgin Mary in the apse. Like its namesake in Constantinople, it served as the city's cathedral for centuries, was converted into a mosque, and returned to Christian worship in 1912.",
+      links: [{label: "Byzantine Monuments of Thessalonika", url: "https://whc.unesco.org/en/list/456"}]
+    },
+    {
+      name: "Church of Saint Demetrios", local: "Άγιος Δημήτριος",
+      parent: "Paleochristian and Byzantine Monuments of Thessalonika",
+      year: "1988", category: "Cultural",
+      location: "Thessaloniki, Central Macedonia",
+      coords: "40.6389° N, 22.9472° E",
+      image: "https://thehistoryofbyzantium.com/wp-content/uploads/2018/01/the-church-of-st-demetrios-today.jpg",
+      description: "The Church of Saint Demetrios is the most important religious site in Thessaloniki, dedicated to the city's patron saint. The current five-aisled basilica dates back to the 7th century, largely restored after the Great Fire of 1917. It is famous for its rare 7th-century mosaics that survived the Iconoclasm. Below the altar lies the Crypt, the remains of the Roman bath where Saint Demetrios was imprisoned and martyred in 303 AD, now an atmospheric museum.",
+      links: [{label: "Byzantine Monuments of Thessalonika", url: "https://whc.unesco.org/en/list/456"}]
+    }
+    ]
   },
   "Turkey": {
     display: "Turkey (Türkiye)",
@@ -2925,6 +3191,219 @@ const DB = {
       description: "This site is famous for its Cotton Castle (Pamukkale) — a series of white travertine terraces formed by calcium-rich thermal springs cascading down the hillside. Built on top of this natural wonder is the ancient Greco-Roman spa city of Hierapolis. Visitors can see the massive Necropolis, the great theater, and even swim in the Antique Pool among submerged Roman columns.",
       links: [{label: "UNESCO World Heritage List — Hierapolis-Pamukkale", url: "https://whc.unesco.org/en/list/485"}]
     }
+    ,
+    {
+      name: "The Ancient City of Troy", local: "",
+      parent: "Archaeological Site of Troy",
+      year: "1998", category: "Cultural",
+      location: "Hisarlık, Çanakkale (Marmara region)",
+      coords: "39.9575° N, 26.2389° E",
+      image: "https://www.passportandpixels.com/wp-content/uploads/2021/05/FY7A9816_pp.jpg",
+      description: "Troy is one of the most famous archaeological sites in the world, boasting 4,000 years of history. It is the setting of the Homeric epic The Iliad, detailing the legendary Trojan War. The site consists of nine archaeological layers (Troy I--IX), showcasing the transition from the Bronze Age to the Roman period, including defensive walls, megaron-style houses, and a Roman theater.",
+      links: [{label: "Archaeological Site of Troy", url: "https://whc.unesco.org/en/list/849"}]
+    },
+    {
+      name: "Xanthos-Letoon", local: "",
+      parent: "Xanthos-Letoon",
+      year: "1988", category: "Cultural",
+      location: "Kaş/Fethiye, Antalya/Muğla (Mediterranean",
+      coords: "36.3567° N, 29.3183° E",
+      image: "",
+      description: "Xanthos was the capital of the Lycian Federation and represents a unique blend of Lycian traditions and Hellenic influence. It is famous for its remarkable funerary art, including rock-cut tombs, pillar tombs, and sarcophagi. The nearby Letoon was the spiritual center of the region, dedicated to Leto, Artemis, and Apollo, and is where the famous trilingual inscription (Lycian, Greek, and Aramaic) was discovered.",
+      links: [{label: "Xanthos-Letoon", url: "https://whc.unesco.org/en/list/484"}]
+    }
+    ]
+  },
+  "Spain": {
+    display: "Spain",
+    sites: [
+    {
+      name: "Historic Centre of Córdoba", local: "",
+      parent: "Historic Centre of Córdoba",
+      year: "1984", category: "Cultural",
+      location: "Córdoba, Andalusia",
+      coords: "37.8794° N, 4.7797° W",
+      image: "https://whc.unesco.org/document/197923/t=16by9",
+      description: "Córdoba\'s historic center is a testament to its golden age as the capital of the Umayyad Caliphate, when it was the largest and most cultured city in Europe. The centerpiece is the Great Mosque-Cathedral (Mezquita), a forest of double-tiered arches that later saw a Renaissance cathedral built in its center. The area also includes the Roman Bridge, the Jewish Quarter (Juderia) with its 14th-century synagogue, and the Alcázar de los Reyes Cristianos, showcasing centuries of coexisting Islamic, Christian, and Jewish heritage.",
+      links: [{label: "Historic Centre of Córdoba", url: "https://whc.unesco.org/en/list/313"}]
+    },
+    {
+      name: "Cave of Altamira and Paleolithic Cave Art of Northern Spain", local: "",
+      parent: "Cave of Altamira and Paleolithic Cave Art of Northern",
+      year: "1985", category: "Cultural",
+      location: "Santillana del Mar, Cantabria",
+      coords: "43.3772° N, 4.1197° W",
+      image: "https://i0.wp.com/theessentialschoolofpainting.com/wp-content/uploads/2016/07/Altamira-Bison-By-Rameessos.jpg?ssl=1",
+      description: "Known as the Sistine Chapel of Paleolithic Art, Altamira contains some of the world\'s most famous prehistoric paintings, dating back 14,000 to 36,000 years. The cave is renowned for its polychrome ceiling featuring bison, horses, and deer drawn with charcoal and ochre. The artists skillfully used the natural contours of the rock to give the animals a three-dimensional appearance, representing the highest peak of Magdalenian culture.",
+      links: [{label: "Cave of Altamira", url: "https://whc.unesco.org/en/list/310"}]
+    }
+    ]
+  },
+  "Poland": {
+    display: "Poland",
+    sites: [
+    {
+      name: "Historic Centre of Kraków", local: "",
+      parent: "Historic Centre of Kraków",
+      year: "1978", category: "Cultural",
+      location: "Kraków, Lesser Poland (Małopolska)",
+      coords: "50.0614° N, 19.9372° E",
+      image: "https://worldheritagesites.net/wp-content/uploads/2022/01/Krakow-Together-In-Transit\\_-002.jpg",
+      description: "Kraków, the former capital of Poland, boasts one of Europe\'s most magnificent medieval urban layouts. The site encompasses the Old Town, the Wawel Hill royal complex, and the historic Kazimierz district (including the ancient Jewish quarter). At its heart lies the Rynek Główny, the largest medieval market square in Europe, dominated by the Renaissance Cloth Hall (Sukiennice) and the Gothic St. Mary\'s Basilica. The city is a living museum of architectural styles, from Romanesque to Art Nouveau, having miraculously survived the destruction of WWII that leveled many other Polish cities.",
+      links: [{label: "Historic Centre of Kraków", url: "https://whc.unesco.org/en/list/29"}]
+    },
+    {
+      name: "Castle of the Teutonic Order in Malbork", local: "",
+      parent: "Castle of the Teutonic Order in Malbork",
+      year: "1997", category: "Cultural",
+      location: "Malbork, Pomeranian Voivodeship (Northern",
+      coords: "54.0392° N, 19.0283° E",
+      image: "https://whc.unesco.org/uploads/thumbs/site_0847_0030-1200-630-20151105151921.jpg",
+      description: "Malbork is the largest castle in the world by land area and the ultimate masterpiece of medieval brick architecture. Built by the Teutonic Knights, a German Roman Catholic religious order of crusaders, it served as the seat of the Grand Master from 1309. The complex is a triple-fortress consisting of the High, Middle, and Lower Castles. It represents the highest development of the Brick Gothic style, featuring innovative central heating systems (hypocausts) and impenetrable defensive walls. Though heavily damaged during WWII, it has been meticulously restored using medieval techniques.",
+      links: [{label: "Malbork Castle", url: "https://whc.unesco.org/en/list/847"}]
+    },
+    {
+      name: "Centennial Hall (Hala Ludowa)", local: "",
+      parent: "Centennial Hall in Wrocław",
+      year: "2006", category: "Cultural",
+      location: "Wrocław, Lower Silesia",
+      coords: "51.1069° N, 17.0769° E",
+      image: "https://api.architectuul.org/media/55a97d56-47bc-4f42-a106-51a56d7b5e1b/1600x900.jpg",
+      description: "Centennial Hall is a landmark in the history of modern architecture. Designed by Max Berg and built between 1911 and 1913, it was a pioneering work of reinforced concrete engineering. At the time of its completion, its dome---with a span of 65 meters---was the largest in the world. The structure is a key reference point for the development of 20th-century construction technology, moving away from traditional ornamentation toward functionalism. The complex also includes the Four Domes Pavilion and the massive pergola surrounding a multimedia fountain.",
+      links: [{label: "Centennial Hall", url: "https://whc.unesco.org/en/list/1165"}]
+    },
+    {
+      name: "Wooden Churches of Southern Małopolska", local: "",
+      parent: "Wooden Churches of Southern Małopolska",
+      year: "2003", category: "Cultural",
+      location: "Binarowa, Blizne, Dębno, Haczów, Lipnica Murowana, and Sękowa",
+      coords: "49.5208° N, 21.1858° E",
+      image: "https://religiana.com/web/sites/default/files/styles/max_800x800/public/images/2019-07/stave-church-2143263_1280.jpg?itok=e9tpWA4b",
+      description: "This site consists of six incredibly well-preserved timber churches that represent the oldest and best-preserved examples of medieval wooden church building in Central Europe. Built using the horizontal log technique (without nails), they represent a blend of Roman Catholic liturgy and local folk traditions. The interiors are often entirely covered in vibrant polychrome paintings---elaborate wall and ceiling decorations dating back to the 15th and 16th centuries. The church in Haczów, built in the 14th century, is believed to be the largest Gothic wooden church in the world.",
+      links: [{label: "Wooden Churches of Southern Małopolska", url: "https://whc.unesco.org/en/list/1053"}]
+    }
+    ]
+  },
+  "Slovenia": {
+    display: "Slovenia",
+    sites: [
+    {
+      name: "Kurentovanje (Door-to-door rounds of Kurenti)", local: "",
+      parent: "Door-to-door rounds of Kurenti",
+      year: "2017", category: "Intangible Cultural Heritage",
+      location: "Ptuj and surrounding villages (Dravsko Polje),",
+      coords: "46.4194° N, 15.8697° E",
+      image: "https://wanderinghelene.com/wp-content/uploads/2021/02/kurentovanje32.jpg",
+      description: "Kurentovanje is Slovenia\'s most popular carnival event, centered around the figure of the Kurent (or Korant). These monstrous figures wear heavy sheepskin outfits, massive cowbells around their waists, and elaborate headgear decorated with ribbons or horns. The tradition involves groups of Kurenti moving from house to house to scare away winter and bring good luck and a fertile harvest for the coming year. It is a loud, rhythmic ritual that serves as a deep bond for local communities in the Ptuj region.",
+      links: []
+    },
+    {
+      name: "Škocjan Caves (Škocjanske jame)", local: "",
+      parent: "Škocjan Caves",
+      year: "1986", category: "Natural",
+      location: "Divača, Karst Plateau (Southwestern Slovenia)",
+      coords: "45.6631° N, 13.9892° E",
+      image: "https://iugs-geoheritage.org/wp-content/uploads/2022/07/098-1_Skocjan-Caves-in-the-Classical-Karst.jpg",
+      description: "The Škocjan Caves represent one of the world\'s most significant phenomena of the Karst topography. This massive underground canyon was carved by the Reka River, which disappears into a sinkhole and flows through the spectacular Martel\'s Chamber---one of the largest underground caverns in existence. The site is famous for its vast limestone halls, deep underground gorges (up to 146 meters deep), and unique rimstone pools. It is also a critical habitat for endemic species like the human fish (Proteus anguinus).",
+      links: [{label: "Škocjan Caves", url: "https://whc.unesco.org/en/list/390"}]
+    }
+    ]
+  },
+  "North Macedonia": {
+    display: "North Macedonia (Северна Македонија)",
+    sites: [
+    {
+      name: "Natural and Cultural Heritage of the Ohrid Region", local: "Охридски регион",
+      parent: "Natural and Cultural Heritage of the Ohrid Region",
+      year: "1979 (extended 1980, 2019)", category: "Mixed (Cultural and Natural)",
+      location: "Ohrid and Struga (shared with Albania)",
+      coords: "41.0333° N, 20.7167° E",
+      image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/St-John-Kaneo.jpg",
+      description: "Lake Ohrid is one of the oldest and deepest lakes in Europe, a biological reserve containing over 200 endemic species including the famous Ohrid trout. The city of Ohrid, often called the Jerusalem of the Balkans, was a major centre of Byzantine learning and once boasted 365 churches. The site preserves an extraordinary collection of Byzantine frescoes, ancient Greek theatres, and prehistoric pile dwellings.",
+      links: [{label: "Ohrid Region Heritage", url: "https://whc.unesco.org/en/list/99"}]
+    },
+    {
+      name: "Church of St. Sophia, Ohrid", local: "Света Софија, Охрид",
+      parent: "Natural and Cultural Heritage of the Ohrid Region",
+      year: "1979", category: "Mixed (Cultural and Natural)",
+      location: "Ohrid, North Macedonia",
+      coords: "41.1121° N, 20.7942° E",
+      image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/St-John-Kaneo.jpg",
+      description: "One of the most important medieval monuments in the Balkans, this church served as the cathedral seat of the Archbishopric of Ohrid for centuries. Built mainly in the 11th century on early Christian basilica foundations, it is world-renowned for its 11th-century frescoes, among the best-preserved Byzantine paintings of that era. The architecture features a unique two-storey exonarthex with loggias added in the 14th century.",
+      links: [{label: "Ohrid Region Heritage", url: "https://whc.unesco.org/en/list/99"}]
+    },
+    {
+      name: "Monastery of Saint Naum", local: "Свети Наум",
+      parent: "Natural and Cultural Heritage of the Ohrid Region",
+      year: "1979", category: "Mixed (Cultural and Natural)",
+      location: "Ljubaništa, southern shore of Lake Ohrid",
+      coords: "40.9142° N, 20.7408° E",
+      image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/f7/f4/10/monastery-of-saint-naum.jpg?w=900&h=-1&s=1",
+      description: "Founded in 905 AD by Saint Naum of Ohrid, a disciple of Saints Cyril and Methodius, this monastery is one of the most sacred sites in the Balkans. Much of the current structure dates to a 16th-century multi-domed Byzantine reconstruction. It was a crucial centre for Slavic literacy. The monastery grounds are famed for their resident peacocks and the crystal-clear springs of the Black Drin River.",
+      links: [{label: "Ohrid Region Heritage", url: "https://whc.unesco.org/en/list/99"}]
+    },
+    {
+      name: "Ancient Theatre of Ohrid", local: "Античкиот театар во Охрид",
+      parent: "Natural and Cultural Heritage of the Ohrid Region",
+      year: "1979", category: "Mixed (Cultural and Natural)",
+      location: "Ohrid (Ancient Lychnidos), Varosh neighbourhood",
+      coords: "41.1156° N, 20.7933° E",
+      image: "https://d2r1gsa5d4zauq.cloudfront.net/images/article/59/10259_headPicture_2.jpg",
+      description: "Built around 200 BC, the Ancient Theatre of Ohrid is the only Hellenistic-type theatre in North Macedonia. Originally used for theatrical performances, it was later converted into an arena for gladiatorial fights. Because it was associated with the execution of Christians, it was abandoned and buried by locals — an act of preservation by burial that kept the site largely intact until its accidental rediscovery in the 1980s.",
+      links: [{label: "Ohrid Region Heritage", url: "https://whc.unesco.org/en/list/99"}]
+    },
+    {
+      name: "Galicica National Park", local: "Националниот парк Галичица",
+      parent: "Natural and Cultural Heritage of the Ohrid Region",
+      year: "1979", category: "Mixed (Natural and Cultural)",
+      location: "Southwestern North Macedonia, between Lake Ohrid and Lake Prespa",
+      coords: "40.9417° N, 20.8522° E",
+      image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/25/25/85/d6/caption.jpg?w=1200&h=-1&s=1",
+      description: "Galicica is a dramatic limestone massif and a global biodiversity hotspot. About 72% of the park falls within the UNESCO-protected Ohrid region. Its karst system acts as a giant natural sieve: water from the higher Lake Prespa travels through underground caves to feed the springs of Lake Ohrid. The park is home to over 1,600 plant species and the elusive Balkan Lynx. From Magaro peak (2,254m) hikers can view both lakes simultaneously.",
+      links: [{label: "Ohrid Region Heritage", url: "https://whc.unesco.org/en/list/99"}]
+    },
+    {
+      name: "Dlaboka Reka — Primeval Beech Forests", local: "Длабока Река",
+      parent: "Ancient and Primeval Beech Forests of the Carpathians and Other Regions of Europe",
+      year: "2021", category: "Natural",
+      location: "Mavrovo National Park, Mount Korab (Upper Reka region)",
+      coords: "41.7631° N, 20.5378° E",
+      image: "https://upload.wikimedia.org/wikipedia/commons/8/81/Dlaboka_River_Valley_in_Macedonia.jpg",
+      description: "Dlaboka Reka is a pristine alpine valley whose primeval beech forests were added to the UNESCO World Heritage list in 2021, recognised for undisturbed ecological processes dating back to the last Ice Age. The river carves a deep U-shaped glacial valley through Mount Korab. The area provides habitat for the rare Balkan Lynx, golden eagles, and chamois. The upper reaches are famed for the Korab Waterfall — at approximately 138 metres, the highest in the Balkans.",
+      links: [{label: "Ancient and Primeval Beech Forests", url: "https://whc.unesco.org/en/list/1133"}]
+    },
+    {
+      name: "Kopachka Dance", local: "Копачка",
+      parent: "Kopachka, a social dance from the village of Dramche, Pijanec",
+      year: "2014", category: "Intangible Cultural Heritage",
+      location: "Village of Dramche, Pijanec region (near Delchevo)",
+      coords: "41.9361° N, 22.7533° E",
+      image: "https://ich.unesco.org/img/photo/thumb/06410-BIG.jpg",
+      description: "Kopachka is a dynamic traditional male folk dance characterised by energetic, fast-paced footwork. The name comes from the Macedonian word kopanje (digging), reflecting the sharp rhythmic stamping of the feet. Performed in a semicircle with dancers holding each other by the belts, it starts slowly and accelerates to an incredibly high tempo, accompanied by drums (tapan) and bagpipes (gajda). It is a rite of passage and symbol of local identity in the Pijanec region.",
+      links: [{label: "UNESCO Intangible CH — Kopachka Dance", url: "https://ich.unesco.org/en/RL/kopachka-00995"}]
+    },
+    {
+      name: "Kokino Megalithic Observatory", local: "Кокино",
+      parent: "Archaeo-astronomical Site Kokino",
+      year: "2009 (Tentative List)", category: "Cultural",
+      location: "Staro Nagoričane (near Kumanovo)",
+      coords: "42.2633° N, 21.9542° E",
+      image: "https://img1.wsimg.com/isteam/ip/05ed51d8-97db-4098-9908-69551bc54e58/kokino%201.jpg",
+      description: "Kokino is a Bronze Age archaeo-astronomical observatory dating to approximately 1800 BC. Ancient observers carved markers into the volcanic rock to track the movement of the sun and moon, enabling tracking of solstices and equinoxes. NASA has previously ranked it as the fourth oldest prehistoric observatory in the world, following Stonehenge, Abu Simbel, and Nabta Playa.",
+      links: [{label: "UNESCO Tentative List — Kokino", url: "https://whc.unesco.org/en/tentativelists/5413/"}],
+      note: "Currently on the UNESCO Tentative List, not yet formally inscribed."
+    },
+    {
+      name: "Markovi Kuli (Marko's Towers)", local: "Маркови Кули",
+      parent: "Markovi Kuli",
+      year: "2004 (Tentative List)", category: "Natural / Cultural",
+      location: "Prilep, Pelagonia region",
+      coords: "41.3614° N, 21.5394° E",
+      image: "https://www.prilepinfo.mk/images/markovikuli/1.jpg",
+      description: "Rising above Prilep, Markovi Kuli is a spectacular fortress complex on a 120-metre-high hill, named after King Marko (Krali Marko), the legendary hero of Balkan folklore who ruled here in the 14th century. The site blends medieval military architecture with extraordinary geomorphology — the fortress is built into a landscape of massively eroded granite boulders resembling figures and towers. Archaeological layers show occupation from the Bronze Age through the Middle Ages.",
+      links: [{label: "UNESCO Tentative List — Markovi Kuli", url: "https://whc.unesco.org/en/tentativelists/1918/"}],
+      note: "Currently on the UNESCO Tentative List, not yet formally inscribed."
+    }
     ]
   }
 };
@@ -3057,7 +3536,7 @@ const SCHOOLS = [
     ]
   },
   {
-    "school": "OEMUC \"ST. Naum Ohridski\"",
+    "school": "OEMUC ST. Naum Ohridski",
     "city": "Ohrid",
     "country": "North Macedonia",
     "flag": "🇲🇰",
@@ -3243,9 +3722,66 @@ function showSchoolDetail(idx) {
 }
 
 // Init after DOM ready
-document.addEventListener("DOMContentLoaded", function() {
+
+// ===== COUNTRY NAV =====
+var COUNTRY_NAV = [
+  { key: 'Turkey',          display: 'Turkey (T\u00fcrkiye)',  flag: '\ud83c\uddf9\ud83c\uddf7' },
+  { key: 'Greece',          display: 'Greece',                 flag: '\ud83c\uddec\ud83c\uddf7' },
+  { key: 'Italy',           display: 'Italy',                  flag: '\ud83c\uddee\ud83c\uddf9' },
+  { key: 'Spain',           display: 'Spain',                  flag: '\ud83c\uddea\ud83c\uddf8' },
+  { key: 'Slovenia',        display: 'Slovenia',               flag: '\ud83c\uddf8\ud83c\uddee' },
+  { key: 'North Macedonia', display: 'North Macedonia',        flag: '\ud83c\uddf2\ud83c\uddf0' },
+  { key: 'Poland',          display: 'Poland',                 flag: '\ud83c\uddf5\ud83c\uddf1' }
+];
+
+var countryNavOpen = false;
+
+function countryNavToggle() {
+  countryNavOpen = !countryNavOpen;
+  document.getElementById('country-nav-panel').classList.toggle('open', countryNavOpen);
+  if (countryNavOpen) {
+    document.getElementById('teams-panel').classList.remove('open');
+    teamsOpen = false;
+    document.getElementById('sites-panel').classList.remove('open');
+    document.getElementById('instruction').style.opacity = '0';
+  } else {
+    document.getElementById('instruction').style.opacity = '0.4';
+  }
+}
+
+function buildCountryNav() {
+  var list = document.getElementById('cn-list');
+  if (!list) return;
+  COUNTRY_NAV.forEach(function(c) {
+    var count = (DB[c.key] && DB[c.key].sites) ? DB[c.key].sites.length : 0;
+    var unit = count === 1 ? 'site' : 'sites';
+    var div = document.createElement('div');
+    div.className = 'cn-item';
+    div.innerHTML =
+      '<div class="cn-flag">' + c.flag + '</div>' +
+      '<div class="cn-info">' +
+        '<div class="cn-name">' + c.display + '</div>' +
+        '<div class="cn-count">' + count + ' ' + unit + '</div>' +
+      '</div>' +
+      '<div class="cn-arrow">&#x2190;</div>';
+    div.onclick = function() {
+      document.querySelectorAll('.cn-item').forEach(function(el) { el.classList.remove('active'); });
+      div.classList.add('active');
+      document.querySelectorAll('.country').forEach(function(p) { p.classList.remove('hovered'); });
+      document.querySelectorAll('[data-country="' + c.key + '"]').forEach(function(p) { p.classList.add('hovered'); });
+      openPanel(c.key);
+      document.getElementById('country-nav-panel').classList.remove('open');
+      countryNavOpen = false;
+    };
+    list.appendChild(div);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
   buildSchoolList();
+  buildCountryNav();
 });
+
 
 </script>
 
@@ -3277,6 +3813,20 @@ document.addEventListener("DOMContentLoaded", function() {
     <div class="sd-body" id="sd-body"></div>
   </div>
 
+</div>
+
+
+<div id="country-nav-tab" onclick="countryNavToggle()">
+  <span class="tab-icon">🌍</span>
+  Countries
+</div>
+<div id="country-nav-panel">
+  <div class="cn-header">
+    <div class="cn-eyebrow">Navigate by</div>
+    <div class="cn-title">Countries</div>
+    <button class="cn-close" onclick="countryNavToggle()">&#x2715;</button>
+  </div>
+  <div class="cn-list" id="cn-list"></div>
 </div>
 
 </body>
