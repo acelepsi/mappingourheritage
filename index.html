@@ -344,7 +344,18 @@
   }
 
   /* Members section */
-  .sd-members-label {
+  .sd-team-image-wrap {
+  position: relative; cursor: zoom-in; margin: 0 0 12px;
+  border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12);
+}
+.sd-team-image { width: 100%; display: block; border-radius: 8px; }
+.sd-team-image-hint {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.65));
+  color: #fff; font-size: 11px; text-align: center;
+  padding: 18px 0 7px; pointer-events: none;
+}
+.sd-members-label {
     font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2.5px;
     text-transform: uppercase; color: var(--gold); opacity: 0.5;
     margin-bottom: 14px;
@@ -3517,6 +3528,7 @@ const SCHOOLS = [
     "country": "Türkiye",
     "flag": "🇹🇷",
     "groupPhoto": "",
+    "teamImage": "https://i.imgur.com/0g6SBZQ.jpeg",
     "students": [
       "Deren",
       "Ali",
@@ -3614,18 +3626,7 @@ const SCHOOLS = [
     "students": [
       "Mihaela"
     ]
-  },
-  {
-    "school": "Bandırma Yavuz Sultan Selim Anadolu Lisesi",
-    "city": "Bandırma",
-    "country": "Türkiye",
-    "flag": "🇹🇷",
-    "groupPhoto": "",
-    "students": [
-      "Büşra"
-    ]
-  },
-  {
+  },  {
     "school": "Základní škola Mělník",
     "city": "Mělník",
     "country": "Czechia",
@@ -3634,6 +3635,32 @@ const SCHOOLS = [
     "students": [
       "Lucie"
     ]
+  },
+  {
+    "school": "Bandırma Yavuz Sultan Selim Anadolu Lisesi",
+    "city": "Bandırma",
+    "country": "Türkiye",
+    "flag": "🇹🇷",
+    "groupPhoto": "https://i.imgur.com/ZpZicBq.jpeg",
+    "students": [
+      "İrem", "Melis", "Deniz", "Zehra (1)", "Nisa",
+      "Zehra (2)", "Doğa", "Kayra", "Gülsima", "Ömer Kaan",
+      "Zeynep Dila", "Esmanur"
+    ],
+    "bios": {
+      "İrem": "Generous and sharing. Dreams of becoming a military pilot in the future.",
+      "Melis": "Generally calm and quiet. Dreams of becoming a general surgeon when she grows up.",
+      "Deniz": "Energetic and outgoing. Interested in science and biking.",
+      "Zehra (1)": "Friendly and creative. Interested in art and design.",
+      "Nisa": "Energetic and friendly. Especially interested in sports. Aims to be an internal medicine doctor.",
+      "Zehra (2)": "Supportive and generous. Dream is to become a military pilot.",
+      "Doğa": "Calm and successful. Wants to become a forensic medicine specialist in the future.",
+      "Kayra": "Generous and calm. Biggest dream is to become a programmer.",
+      "Gülsima": "Focused and curious. Enjoys sports like tennis and horseback riding. Ambitious and creative, likes exploring new skills and hobbies.",
+      "Ömer Kaan": "Outgoing and friendly. Interested in military and sports.",
+      "Zeynep Dila": "Friendly, generous, successful and energetic. Interested in creating and designing projects.",
+      "Esmanur": "Hardworking, outgoing and kind. Interested in art and horses."
+    }
   }
 ];
 
@@ -3711,14 +3738,33 @@ function showSchoolDetail(idx) {
       </div>`;
   }).join('');
 
+  const teamImageHtml = s.teamImage
+    ? `<div class="sd-members-label">Team Overview</div>
+       <div class="sd-team-image-wrap" onclick="openLightbox('${s.teamImage}')" title="Click to expand">
+         <img src="${s.teamImage}" alt="${s.school} team overview" class="sd-team-image">
+         <div class="sd-team-image-hint">🔍 Click to expand</div>
+       </div>`
+    : '';
+
   document.getElementById('sd-body').innerHTML = `
     <div class="sd-flag">${s.flag}</div>
     <div class="sd-school-name">${s.school}</div>
     <div class="sd-location">${s.city}, ${s.country}</div>
     <div class="sd-group-photo">${groupPhotoHtml}</div>
+    ${teamImageHtml}
     <div class="sd-members-label">Team Members</div>
     <div class="sd-members-grid">${membersHtml}</div>
   `;
+}
+
+function openLightbox(src) {
+  const lb = document.createElement('div');
+  lb.id = 'lightbox-overlay';
+  lb.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
+  lb.innerHTML = `<img src="${src}" style="max-width:92vw;max-height:92vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.7);">
+    <div style="position:absolute;top:16px;right:22px;color:#fff;font-size:28px;cursor:pointer;line-height:1;" onclick="this.parentElement.remove()">✕</div>`;
+  lb.addEventListener('click', e => { if (e.target === lb) lb.remove(); });
+  document.body.appendChild(lb);
 }
 
 // Init after DOM ready
