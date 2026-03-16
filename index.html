@@ -344,7 +344,13 @@
   }
 
   /* Members section */
-  .sd-team-image-wrap {
+  .sd-team-intro {
+  font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.06); border-left: 3px solid #f0c040;
+  border-radius: 0 6px 6px 0; padding: 10px 12px; margin: 0 0 14px;
+  font-style: italic;
+}
+.sd-team-image-wrap {
   position: relative; cursor: zoom-in; margin: 0 0 12px;
   border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12);
 }
@@ -3537,25 +3543,30 @@ const SCHOOLS = [
   },
   {
     "school": "IES Galileo Galilei",
-    "city": "Cordoba",
+    "city": "Córdoba",
     "country": "Spain",
     "flag": "🇪🇸",
-    "groupPhoto": "",
-    "students": [
-      "Xavi",
-      "Puyol",
-      "İniesta"
-    ]
+    "groupPhoto": "https://i.imgur.com/1MTOtUM.jpeg",
+    "teamIntro": "We are 9 students from 4th ESO English Extension at IES Galileo Galilei (14–16 years old). Our teachers, María and Carmelo, guide us in projects like eTwinning and even theatre! We are currently creating our own original play, practising English through speaking, listening, and teamwork. We love learning about new cultures, sharing ideas, and having fun while working on creative projects.",
+    "students": ["Eva","Lucía","Rafael","Alba","Georgiana","Mireia","Antonio Jesús","Axel","Nicolás"]
   },
   {
     "school": "OEMUC ST. Naum Ohridski",
     "city": "Ohrid",
     "country": "North Macedonia",
     "flag": "🇲🇰",
-    "groupPhoto": "",
-    "students": [
-      "Alexander"
-    ]
+    "groupPhoto": "https://i.imgur.com/OxrzF0U.jpeg",
+    "students": ["Sofija","Kalina","Angela","Ivona","Angelina","Jordanka","Evgenija","Konstantin"],
+    "photos": {
+      "Sofija":    "https://i.imgur.com/MXWKSJh.jpeg",
+      "Kalina":    "https://i.imgur.com/8wk9TFZ.jpeg",
+      "Angela":    "https://i.imgur.com/bjB03le.jpeg",
+      "Ivona":     "https://i.imgur.com/AKXbdv9.jpeg",
+      "Angelina":  "https://i.imgur.com/Wj2eALe.jpeg",
+      "Jordanka":  "https://i.imgur.com/PX70wzf.jpeg",
+      "Evgenija":  "https://i.imgur.com/XgGFk7U.jpeg",
+      "Konstantin":"https://i.imgur.com/RUd0dAn.jpeg"
+    }
   },
   {
     "school": "EEEEK of Ikaria",
@@ -3602,10 +3613,25 @@ const SCHOOLS = [
     "city": "Gdynia",
     "country": "Poland",
     "flag": "🇵🇱",
-    "groupPhoto": "",
-    "students": [
-      "Magda"
-    ]
+    "groupPhoto": "https://i.imgur.com/yKpb9sc.jpeg",
+    "students": ["Maciek","Sebastian","Tymon","Oliwia","Adrian","Oliwier","Kacper","Zosia","Monika","Kyryl","Julita","Dominika S.","Dominika C.","Iza","Zuza"],
+    "bios": {
+      "Maciek":      "Good at cooking and truthful, with a great sense of humour.",
+      "Sebastian":   "Funny student of gastronomy, really hooked on cooking and basketball.",
+      "Tymon":       "A friendly student of a gastronomy school, efficient in work, sometimes smart. Reading manga and cooking are passions, along with discovering new and fascinating things.",
+      "Oliwia":      "A kind, funny and helpful student who likes cooking, travelling, singing and learning new things.",
+      "Adrian":      "A helpful and friendly student of gastronomy school who likes studying history and travel.",
+      "Oliwier":     "Student of gastronomy high school who wants to develop a game in the future and loves listening to music.",
+      "Kacper":      "A highly relaxed, quick problem solver who likes cooking.",
+      "Zosia":       "A gastronomy student who likes cooking, is passionate about dancing and is focused on learning new things.",
+      "Monika":      "A kind and friendly student who is keen on travelling and exploring new places.",
+      "Kyryl":       "Kind and tolerant. Likes indie games, listening to different music and also cooking.",
+      "Julita":      "Enthusiastic student of gastronomy school, always curious and passionate about dancing and cooking.",
+      "Dominika S.": "Student of gastronomy school who loves to travel, reads books and is ready to learn new things.",
+      "Dominika C.": "Student of a gastronomy school who likes baking and cooking.",
+      "Iza":         "Kind and helpful. Likes travelling around the world and listening to different types of music.",
+      "Zuza":        "Likes listening to music, watching movies and playing games."
+    }
   },
   {
     "school": "IISS Leonardo Da Vinci",
@@ -3738,6 +3764,10 @@ function showSchoolDetail(idx) {
       </div>`;
   }).join('');
 
+  const teamIntroHtml = s.teamIntro
+    ? `<div class="sd-team-intro">${s.teamIntro}</div>`
+    : '';
+
   const teamImageHtml = s.teamImage
     ? `<div class="sd-members-label">Team Overview</div>
        <div class="sd-team-image-wrap" onclick="openLightbox('${s.teamImage}')" title="Click to expand">
@@ -3751,6 +3781,7 @@ function showSchoolDetail(idx) {
     <div class="sd-school-name">${s.school}</div>
     <div class="sd-location">${s.city}, ${s.country}</div>
     <div class="sd-group-photo">${groupPhotoHtml}</div>
+    ${teamIntroHtml}
     ${teamImageHtml}
     <div class="sd-members-label">Team Members</div>
     <div class="sd-members-grid">${membersHtml}</div>
