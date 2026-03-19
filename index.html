@@ -1239,54 +1239,6 @@ header {
 }
 
 
-/* ── Mobile bottom nav bar (hidden on desktop) ───────────── */
-#mobile-nav {
-  display: none; /* overridden to flex inside @media (max-width:768px) */
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  z-index: 500;
-  background: linear-gradient(to top, rgba(10,8,4,0.98) 70%, rgba(10,8,4,0.92));
-  border-top: 1px solid rgba(201,168,76,0.18);
-  backdrop-filter: blur(12px);
-  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-  align-items: stretch;
-  justify-content: space-around;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-}
-#mobile-nav.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-.mob-nav-btn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px 4px;
-  color: rgba(201,168,76,0.6);
-  transition: color 0.2s;
-  -webkit-tap-highlight-color: transparent;
-}
-.mob-nav-btn:active { color: var(--gold-light); }
-.mob-nav-center {
-  border-left:  1px solid rgba(201,168,76,0.12);
-  border-right: 1px solid rgba(201,168,76,0.12);
-}
-.mob-nav-icon  { font-size: 20px; line-height: 1; }
-.mob-nav-label {
-  font-family: 'Cinzel', serif;
-  font-size: 8px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  line-height: 1;
-}
 
 /* ═══════════════════════════════════════════════════════════
    MOBILE RESPONSIVENESS  (≤ 768px)
@@ -1301,7 +1253,7 @@ header {
     gap: 0;
   }
   .header-left { gap: 8px; flex: 1; min-width: 0; }
-  .header-right { gap: 8px; flex-shrink: 0; }
+  .header-right { gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; max-width: 55%; }
   .header-title {
     font-size: 8px;
     letter-spacing: 2px;
@@ -1323,10 +1275,6 @@ header {
   #country-nav-tab { display: none; }
 
   /* ── Mobile bottom navigation bar ───────────────────── */
-  #mobile-nav {
-    display: flex !important; /* override base display:none */
-  }
-
   /* ── All three panels become bottom sheets ───────────── */
   #teams-panel,
   #sites-panel,
@@ -1477,6 +1425,13 @@ header {
   flex-shrink: 0;
   filter: drop-shadow(0 1px 4px rgba(0,0,0,0.4));
 }
+
+/* On very small screens — icon-only header buttons */
+@media (max-width: 480px) {
+  .header-btn span, .header-btn { font-size: 0; letter-spacing: 0; padding: 6px 8px; gap: 0; }
+  .header-btn svg { width: 14px; height: 14px; }
+  .header-title { font-size: 7px; letter-spacing: 1.5px; }
+}
 </style>
 </head>
 <body style="overflow:hidden">
@@ -1599,6 +1554,14 @@ header {
   </div>
   <div class="header-right">
     <div class="header-sub">UNESCO World Heritage Sites — An E-Twinning Project</div>
+    <button class="header-btn" id="teams-btn" onclick="teamsToggle()" aria-label="Project Teams">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      Teams
+    </button>
+    <button class="header-btn" id="countries-btn" onclick="countryNavToggle()" aria-label="Browse countries">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      Countries
+    </button>
     <button class="header-btn" id="about-btn" onclick="openAbout()" aria-label="About the project">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       About
@@ -5052,8 +5015,6 @@ function enterSite() {
     const footer = document.getElementById('site-footer');
     if (footer) footer.classList.add('visible');
     document.querySelectorAll('.header-btn').forEach(b => b.classList.add('visible'));
-    const mNav = document.getElementById('mobile-nav');
-    if (mNav) mNav.classList.add('visible');
   }, 400);
 }
 
@@ -5085,8 +5046,6 @@ function backToLanding() {
   // Hide footer, header buttons and mobile nav
   if (footer) footer.classList.remove('visible');
   document.querySelectorAll('.header-btn').forEach(b => b.classList.remove('visible'));
-  const mNavBack = document.getElementById('mobile-nav');
-  if (mNavBack) mNavBack.classList.remove('visible');
 }
 
 // ── About panel ───────────────────────────────────────────────────────────────
@@ -5314,20 +5273,6 @@ function closeAllSheets() {
 </div><!-- /about-overlay -->
 
 
-<nav id="mobile-nav" role="navigation" aria-label="Mobile navigation">
-  <button class="mob-nav-btn" onclick="teamsToggle()" aria-label="Project Teams">
-    <span class="mob-nav-icon">👥</span>
-    <span class="mob-nav-label">Teams</span>
-  </button>
-  <button class="mob-nav-btn mob-nav-center" onclick="countryNavToggle()" aria-label="Browse countries">
-    <span class="mob-nav-icon">🌍</span>
-    <span class="mob-nav-label">Countries</span>
-  </button>
-  <button class="mob-nav-btn" onclick="openAbout()" aria-label="About the project">
-    <span class="mob-nav-icon">ℹ️</span>
-    <span class="mob-nav-label">About</span>
-  </button>
-</nav>
 
 <div id="sheet-backdrop" onclick="closeAllSheets()"></div>
 </body>
