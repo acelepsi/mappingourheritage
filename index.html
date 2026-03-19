@@ -1230,6 +1230,238 @@ header {
   text-align: center;
 }
 
+
+/* ── Mobile bottom nav bar (hidden on desktop) ───────────── */
+#mobile-nav {
+  display: none; /* shown via media query */
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 500;
+  background: linear-gradient(to top, rgba(10,8,4,0.98) 70%, rgba(10,8,4,0.92));
+  border-top: 1px solid rgba(201,168,76,0.18);
+  backdrop-filter: blur(12px);
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+  display: none;
+  align-items: stretch;
+  justify-content: space-around;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+#mobile-nav.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.mob-nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  color: rgba(201,168,76,0.6);
+  transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mob-nav-btn:active { color: var(--gold-light); }
+.mob-nav-center {
+  border-left:  1px solid rgba(201,168,76,0.12);
+  border-right: 1px solid rgba(201,168,76,0.12);
+}
+.mob-nav-icon  { font-size: 20px; line-height: 1; }
+.mob-nav-label {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS  (≤ 768px)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── Header ─────────────────────────────────────────── */
+  header {
+    padding: 10px 14px;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+  }
+  .header-left { gap: 8px; flex: 1; min-width: 0; }
+  .header-right { gap: 8px; flex-shrink: 0; }
+  .header-title {
+    font-size: 8px;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .header-sub { display: none; } /* hidden on mobile — too cramped */
+  .header-btn {
+    padding: 5px 9px;
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    gap: 5px;
+  }
+  .header-btn svg { width: 10px; height: 10px; }
+
+  /* ── Desktop side tabs — hide them on mobile ─────────── */
+  #teams-tab,
+  #country-nav-tab { display: none; }
+
+  /* ── Mobile bottom navigation bar ───────────────────── */
+  #mobile-nav {
+    display: flex; /* shown only on mobile */
+  }
+
+  /* ── All three panels become bottom sheets ───────────── */
+  #teams-panel,
+  #sites-panel,
+  #country-nav-panel {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 88vh;
+    max-height: 88vh;
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid rgba(201,168,76,0.25);
+    border-radius: 16px 16px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: 0 -12px 60px rgba(0,0,0,0.7);
+  }
+  #teams-panel.open,
+  #sites-panel.open,
+  #country-nav-panel.open {
+    transform: translateY(0);
+  }
+
+  /* Drag handle on each bottom sheet */
+  #teams-panel::before,
+  #sites-panel::before,
+  #country-nav-panel::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    background: rgba(201,168,76,0.3);
+    border-radius: 2px;
+    margin: 10px auto 0;
+    flex-shrink: 0;
+  }
+
+  /* Fix top padding inside panels (was 76px for desktop header offset) */
+  .panel-head { padding: 14px 20px 16px; }
+  .close-btn  { top: 14px; right: 16px; }
+  .tp-header  { padding: 14px 20px 14px; }
+  .tp-close   { top: 14px; right: 16px; }
+  .cn-header  { padding: 14px 20px 14px; }
+  .cn-close   { top: 14px; right: 16px; }
+
+  /* ── Sites panel ─────────────────────────────────────── */
+  #sites-panel { z-index: 280; } /* above other panels */
+
+  /* ── Detail modal — full screen on mobile ────────────── */
+  #detail-modal { padding: 0; align-items: flex-end; }
+  .modal-card {
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 16px 16px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+  .modal-img    { height: 200px; }
+  .modal-body   { padding: 20px 22px 32px; }
+  .modal-title  { font-size: 20px; }
+  .modal-meta   { gap: 14px; }
+
+  /* ── About panel ─────────────────────────────────────── */
+  #about-overlay { padding: 0; align-items: flex-end; }
+  .about-card {
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 16px 16px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+  .about-hero   { height: 120px; padding: 0 20px 18px; }
+  .about-title  { font-size: 20px; }
+  .about-body   { padding: 20px 20px 32px; gap: 24px 0; }
+  .about-partners { gap: 16px; }
+
+  /* ── Footer — stack vertically ───────────────────────── */
+  #site-footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 14px 16px 12px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  .footer-logos   { justify-content: center; }
+  .footer-center  { order: 3; }
+  .footer-right   { order: 2; align-items: center; }
+  .footer-disclaimer { font-size: 8px; }
+
+  /* ── Landing page adjustments ────────────────────────── */
+  .lp-logos {
+    gap: 14px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .lp-logo-divider { display: none; }
+  .lp-project-logo { height: 44px; }
+  .etwinning-logo-img { height: 34px; }
+  .eu-flag-svg    { height: 26px; }
+
+  .lp-title       { font-size: clamp(26px, 7vw, 40px); }
+  .lp-subtitle    { font-size: 15px; margin-bottom: 16px; }
+  .lp-description { font-size: 13px; margin-bottom: 24px; }
+  .lp-stats       { gap: 20px; margin-bottom: 28px; }
+  .lp-stat-num    { font-size: 26px; }
+  .lp-rule        { margin-bottom: 14px; }
+  .lp-enter-btn   { padding: 13px 32px; font-size: 11px; }
+  .lp-caption     { display: none; }
+
+  /* ── Lightbox — full screen on mobile ────────────────── */
+  #lightbox-overlay img {
+    max-width: 98vw;
+    max-height: 80vh;
+  }
+}
+
+
+/* Bottom sheet backdrop */
+#sheet-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 240;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+#sheet-backdrop.visible {
+  opacity: 1;
+}
+@media (max-width: 768px) {
+  #sheet-backdrop { display: block; pointer-events: none; }
+  #sheet-backdrop.visible { pointer-events: auto; }
+}
+
 </style>
 </head>
 <body style="overflow:hidden">
@@ -4309,6 +4541,10 @@ const DB = {
 function openPanel(countryName) {
   const data = DB[countryName];
   if (!data) return;
+  // On mobile: close teams/countries sheet first
+  if (teamsOpen) { teamsOpen = false; document.getElementById('teams-panel').classList.remove('open'); }
+  if (countryNavOpen) { countryNavOpen = false; document.getElementById('country-nav-panel').classList.remove('open'); }
+  setBackdrop(true);
   document.getElementById("panel-country").textContent = data.display;
   const list = document.getElementById("sites-list");
   list.innerHTML = "";
@@ -4327,6 +4563,7 @@ function openPanel(countryName) {
 
 function closePanel() {
   document.getElementById("sites-panel").classList.remove("open");
+  setBackdrop(false);
   document.getElementById("instruction").style.opacity = "0.4";
   document.querySelectorAll(".country").forEach(e => e.classList.remove("active", "hovered"));
 }
@@ -4576,6 +4813,8 @@ let teamsOpen = false;
 function teamsToggle() {
   teamsOpen = !teamsOpen;
   document.getElementById('teams-panel').classList.toggle('open', teamsOpen);
+  if (teamsOpen) { countryNavOpen = false; document.getElementById('country-nav-panel').classList.remove('open'); }
+  setBackdrop(teamsOpen);
   if (teamsOpen) {
     document.getElementById('sites-panel').classList.remove('open');
     document.getElementById('instruction').style.opacity = '0';
@@ -4697,6 +4936,8 @@ var countryNavOpen = false;
 function countryNavToggle() {
   countryNavOpen = !countryNavOpen;
   document.getElementById('country-nav-panel').classList.toggle('open', countryNavOpen);
+  if (countryNavOpen) { teamsOpen = false; document.getElementById('teams-panel').classList.remove('open'); }
+  setBackdrop(countryNavOpen);
   if (countryNavOpen) {
     document.getElementById('teams-panel').classList.remove('open');
     teamsOpen = false;
@@ -4786,11 +5027,13 @@ function enterSite() {
     landing.style.display = 'none';
     document.body.style.overflow = '';
   }, 900);
-  // Show footer and header buttons as landing fades out
+  // Show footer, header buttons, and mobile nav as landing fades out
   setTimeout(() => {
     const footer = document.getElementById('site-footer');
     if (footer) footer.classList.add('visible');
     document.querySelectorAll('.header-btn').forEach(b => b.classList.add('visible'));
+    const mNav = document.getElementById('mobile-nav');
+    if (mNav) mNav.classList.add('visible');
   }, 400);
 }
 
@@ -4819,9 +5062,11 @@ function backToLanding() {
   landing.offsetHeight;
   landing.classList.remove('fade-out');
   document.body.style.overflow = 'hidden';
-  // Hide footer and header buttons
+  // Hide footer, header buttons and mobile nav
   if (footer) footer.classList.remove('visible');
   document.querySelectorAll('.header-btn').forEach(b => b.classList.remove('visible'));
+  const mNavBack = document.getElementById('mobile-nav');
+  if (mNavBack) mNavBack.classList.remove('visible');
 }
 
 // ── About panel ───────────────────────────────────────────────────────────────
@@ -4839,6 +5084,29 @@ document.getElementById('about-overlay').addEventListener('click', function(e) {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeAbout();
 });
+
+
+
+// ── Mobile bottom sheet helpers ───────────────────────────────────────────────
+function setBackdrop(on) {
+  const bd = document.getElementById('sheet-backdrop');
+  if (!bd) return;
+  bd.classList.toggle('visible', on);
+}
+
+function closeAllSheets() {
+  // Close all panels
+  if (teamsOpen) teamsToggle();
+  if (countryNavOpen) countryNavToggle();
+  // Close sites panel
+  const sp = document.getElementById('sites-panel');
+  if (sp && sp.classList.contains('open')) {
+    sp.classList.remove('open');
+    const activeC = document.querySelector('.country.active');
+    if (activeC) activeC.classList.remove('active');
+  }
+  setBackdrop(false);
+}
 
 </script>
 
@@ -5038,5 +5306,22 @@ document.addEventListener('keydown', function(e) {
   </div><!-- /about-card -->
 </div><!-- /about-overlay -->
 
+
+<nav id="mobile-nav" role="navigation" aria-label="Mobile navigation">
+  <button class="mob-nav-btn" onclick="teamsToggle()" aria-label="Project Teams">
+    <span class="mob-nav-icon">👥</span>
+    <span class="mob-nav-label">Teams</span>
+  </button>
+  <button class="mob-nav-btn mob-nav-center" onclick="countryNavToggle()" aria-label="Browse countries">
+    <span class="mob-nav-icon">🌍</span>
+    <span class="mob-nav-label">Countries</span>
+  </button>
+  <button class="mob-nav-btn" onclick="openAbout()" aria-label="About the project">
+    <span class="mob-nav-icon">ℹ️</span>
+    <span class="mob-nav-label">About</span>
+  </button>
+</nav>
+
+<div id="sheet-backdrop" onclick="closeAllSheets()"></div>
 </body>
 </html>
