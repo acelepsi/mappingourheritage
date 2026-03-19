@@ -4361,6 +4361,13 @@ header {
 </div>
 
 <script>
+// JSONBin configuration — declared at top level to avoid hoisting issues
+var JSONBIN_MASTER  = '$2a$10$Ef9taEhfhbwaBX7hAxCaM.2S6uZ/4/eMsyrUnIq1pxiKbae8TvFSO';
+var JSONBIN_ACCESS  = '$2a$10$S.WUdGekBkYxZQTFSPh6OervHdZMPaCouDKkCBs6iD1dIy6UTAB6u';
+var JSONBIN_BASE    = 'https://api.jsonbin.io/v3';
+var JSONBIN_BIN_KEY = 'moh-refl-bin-id';
+
+
 const DB = {
   "Italy": {
     display: "Italy",
@@ -5500,11 +5507,6 @@ function closeAllSheets() {
 // ═══════════════════════════════════════════════════════════
 // REFLECTIONS BOARD — JSONBin backend
 // ═══════════════════════════════════════════════════════════
-var JSONBIN_MASTER  = '$2a$10$Ef9taEhfhbwaBX7hAxCaM.2S6uZ/4/eMsyrUnIq1pxiKbae8TvFSO';
-var JSONBIN_ACCESS  = '$2a$10$S.WUdGekBkYxZQTFSPh6OervHdZMPaCouDKkCBs6iD1dIy6UTAB6u';
-var JSONBIN_BASE    = 'https://api.jsonbin.io/v3';
-var JSONBIN_BIN_KEY = 'moh-refl-bin-id';
-
 var reflAllPosts     = [];
 var reflActiveFilter = 'all';
 var reflSelectedTag  = 'What I Learned';
