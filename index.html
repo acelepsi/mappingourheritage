@@ -1432,6 +1432,363 @@ header {
   .header-btn svg { width: 14px; height: 14px; }
   .header-title { font-size: 7px; letter-spacing: 1.5px; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   REFLECTIONS BOARD
+═══════════════════════════════════════════════════════════ */
+#reflections-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 8500;
+  background: rgba(6,5,3,0.80);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+  display: flex;
+  flex-direction: column;
+}
+#reflections-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Panel shell ── */
+.refl-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Header bar ── */
+.refl-header {
+  flex-shrink: 0;
+  padding: 22px 40px 18px;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: linear-gradient(to bottom, rgba(14,12,8,0.98), rgba(14,12,8,0.92));
+}
+.refl-header-left { display: flex; flex-direction: column; gap: 3px; }
+.refl-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.65);
+}
+.refl-title {
+  font-family: 'Cinzel', serif;
+  font-size: 22px; font-weight: 600;
+  color: var(--parchment);
+  letter-spacing: 0.05em;
+}
+.refl-header-right {
+  display: flex; align-items: center; gap: 14px;
+}
+.refl-post-count {
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 0.15em;
+  color: rgba(201,168,76,0.5);
+}
+.refl-close {
+  background: rgba(10,8,4,0.65);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold); width: 34px; height: 34px;
+  border-radius: 50%; cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px); transition: all 0.2s; flex-shrink: 0;
+}
+.refl-close:hover { background: rgba(201,168,76,0.18); border-color: var(--gold); }
+
+/* ── Body — compose + board side by side ── */
+.refl-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  overflow: hidden;
+}
+
+/* ── Compose panel ── */
+.refl-compose {
+  border-right: 1px solid rgba(201,168,76,0.12);
+  padding: 28px 28px 32px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201,168,76,0.2) transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: rgba(14,12,8,0.4);
+}
+.refl-compose-title {
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold); opacity: 0.7;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+}
+
+/* Form fields */
+.refl-field { display: flex; flex-direction: column; gap: 6px; }
+.refl-label {
+  font-family: 'Cinzel', serif;
+  font-size: 8px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.55);
+}
+.refl-input, .refl-select, .refl-textarea {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.2);
+  color: var(--parchment);
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px;
+  padding: 9px 12px;
+  border-radius: 2px;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.refl-input:focus, .refl-select:focus, .refl-textarea:focus {
+  outline: none;
+  border-color: rgba(201,168,76,0.55);
+  background: rgba(255,255,255,0.06);
+}
+.refl-select { cursor: pointer; }
+.refl-select option { background: #1a1710; color: var(--parchment); }
+.refl-textarea {
+  resize: vertical;
+  min-height: 100px;
+  max-height: 180px;
+  line-height: 1.6;
+}
+.refl-char-count {
+  font-size: 10px; font-style: italic;
+  color: rgba(201,168,76,0.35);
+  text-align: right;
+  margin-top: -4px;
+}
+.refl-char-count.near-limit { color: rgba(201,168,76,0.7); }
+
+/* Tag selector */
+.refl-tags {
+  display: flex; flex-wrap: wrap; gap: 7px;
+}
+.refl-tag {
+  padding: 4px 10px;
+  border: 1px solid rgba(201,168,76,0.22);
+  background: transparent;
+  color: rgba(201,168,76,0.55);
+  font-family: 'Cinzel', serif;
+  font-size: 8px; letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer; border-radius: 2px;
+  transition: all 0.2s;
+}
+.refl-tag:hover { border-color: rgba(201,168,76,0.5); color: rgba(201,168,76,0.8); }
+.refl-tag.selected {
+  background: rgba(201,168,76,0.18);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+/* Submit button */
+.refl-submit {
+  padding: 12px 20px;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.4);
+  color: rgba(201,168,76,0.9);
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer; border-radius: 2px;
+  transition: all 0.25s; position: relative; overflow: hidden;
+}
+.refl-submit::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(201,168,76,0.14);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.refl-submit:hover::before { transform: scaleX(1); }
+.refl-submit:hover { border-color: var(--gold); color: #fff; }
+.refl-submit:disabled {
+  opacity: 0.35; cursor: not-allowed;
+}
+.refl-submit:disabled::before { display: none; }
+
+/* Status message */
+.refl-status {
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px; font-style: italic;
+  text-align: center; min-height: 18px;
+  color: rgba(201,168,76,0.7);
+  transition: opacity 0.3s;
+}
+.refl-status.error { color: rgba(220,80,80,0.8); }
+
+/* ── Board ── */
+.refl-board {
+  padding: 24px 28px 32px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201,168,76,0.2) transparent;
+}
+.refl-board-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.refl-board-title {
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold); opacity: 0.7;
+}
+.refl-filter-tags {
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+.refl-filter-tag {
+  padding: 3px 9px;
+  border: 1px solid rgba(201,168,76,0.18);
+  background: transparent;
+  color: rgba(201,168,76,0.45);
+  font-family: 'Cinzel', serif;
+  font-size: 7.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; cursor: pointer;
+  border-radius: 2px; transition: all 0.2s;
+}
+.refl-filter-tag:hover,
+.refl-filter-tag.active {
+  background: rgba(201,168,76,0.12);
+  border-color: rgba(201,168,76,0.5);
+  color: var(--gold);
+}
+
+/* Card grid */
+.refl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.refl-card {
+  background: linear-gradient(145deg, rgba(30,27,18,0.9), rgba(20,17,8,0.95));
+  border: 1px solid rgba(201,168,76,0.14);
+  border-radius: 3px;
+  padding: 16px 18px 14px;
+  display: flex; flex-direction: column; gap: 10px;
+  animation: cardIn 0.4s cubic-bezier(0.16,1,0.3,1) both;
+  position: relative; overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.refl-card:hover {
+  border-color: rgba(201,168,76,0.35);
+  transform: translateY(-2px);
+}
+.refl-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent);
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.refl-card-top {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 8px;
+}
+.refl-card-school {
+  display: flex; align-items: center; gap: 7px;
+  min-width: 0;
+}
+.refl-card-flag { font-size: 18px; flex-shrink: 0; line-height: 1; }
+.refl-card-school-name {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(201,168,76,0.65);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.refl-card-tag-badge {
+  font-family: 'Cinzel', serif; font-size: 7px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(201,168,76,0.45);
+  border: 1px solid rgba(201,168,76,0.18);
+  padding: 2px 6px; border-radius: 2px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.refl-card-text {
+  font-family: 'Crimson Pro', serif;
+  font-size: 14.5px; line-height: 1.65;
+  color: rgba(240,232,208,0.82);
+  font-style: italic;
+  flex: 1;
+}
+.refl-card-footer {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid rgba(201,168,76,0.08);
+}
+.refl-card-author {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.12em; color: var(--gold); opacity: 0.7;
+}
+.refl-card-date {
+  font-size: 10px; font-style: italic;
+  color: rgba(201,168,76,0.3);
+}
+
+/* Empty state */
+.refl-empty {
+  grid-column: 1 / -1;
+  text-align: center; padding: 60px 20px;
+  color: rgba(201,168,76,0.3);
+}
+.refl-empty-icon { font-size: 36px; margin-bottom: 12px; }
+.refl-empty-text {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+/* Loading spinner */
+.refl-loading {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px; gap: 12px;
+  color: rgba(201,168,76,0.4);
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+.refl-spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(201,168,76,0.2);
+  border-top-color: rgba(201,168,76,0.7);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .refl-header { padding: 16px 18px 14px; }
+  .refl-title  { font-size: 17px; }
+  .refl-body   { grid-template-columns: 1fr; overflow: visible; }
+  .refl-compose {
+    border-right: none;
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    padding: 20px 18px 22px;
+  }
+  .refl-board  { padding: 18px 14px 28px; }
+  .refl-grid   { grid-template-columns: 1fr; }
+  #reflections-overlay { overflow-y: auto; }
+  .refl-panel  { position: relative; min-height: 100vh; }
+}
+
 </style>
 </head>
 <body style="overflow:hidden">
@@ -1561,6 +1918,10 @@ header {
     <button class="header-btn" id="countries-btn" onclick="countryNavToggle()" aria-label="Browse countries">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
       Countries
+    </button>
+    <button class="header-btn" id="refl-btn" onclick="openReflections()" aria-label="Reflections board">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Reflections
     </button>
     <button class="header-btn" id="about-btn" onclick="openAbout()" aria-label="About the project">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -5088,6 +5449,179 @@ function closeAllSheets() {
   setBackdrop(false);
 }
 
+
+
+// ═══════════════════════════════════════════════════════════
+// REFLECTIONS BOARD
+// ═══════════════════════════════════════════════════════════
+const REFL_STORAGE_KEY = 'reflections-board-v1';
+let reflAllPosts = [];
+let reflActiveFilter = 'all';
+let reflSelectedTag = 'What I Learned';
+
+function openReflections() {
+  document.getElementById('reflections-overlay').classList.add('open');
+  const footer = document.getElementById('site-footer');
+  if (footer) footer.classList.add('hidden-by-panel');
+  loadReflections();
+}
+function closeReflections() {
+  document.getElementById('reflections-overlay').classList.remove('open');
+  const footer = document.getElementById('site-footer');
+  if (footer) footer.classList.remove('hidden-by-panel');
+}
+document.getElementById('reflections-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeReflections();
+});
+
+// ── Tag selection ─────────────────────────────────────────
+function selectTag(el) {
+  document.querySelectorAll('.refl-tag').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  reflSelectedTag = el.dataset.tag;
+}
+
+// ── Character counter ─────────────────────────────────────
+function reflCharCount(ta) {
+  const n = ta.value.length;
+  const el = document.getElementById('refl-char-count');
+  el.textContent = n + ' / 280';
+  el.className = 'refl-char-count' + (n > 240 ? ' near-limit' : '');
+}
+
+// ── Load posts from storage ───────────────────────────────
+async function loadReflections() {
+  const grid = document.getElementById('refl-grid');
+  grid.innerHTML = '<div class="refl-loading"><div class="refl-spinner"></div>Loading reflections...</div>';
+  try {
+    const result = await window.storage.get(REFL_STORAGE_KEY, true);
+    reflAllPosts = result ? JSON.parse(result.value) : [];
+  } catch(e) {
+    reflAllPosts = [];
+  }
+  renderBoard();
+}
+
+// ── Render cards ──────────────────────────────────────────
+function renderBoard() {
+  const grid = document.getElementById('refl-grid');
+  const countEl = document.getElementById('refl-post-count');
+
+  const filtered = reflActiveFilter === 'all'
+    ? reflAllPosts
+    : reflAllPosts.filter(p => p.tag === reflActiveFilter);
+
+  countEl.textContent = reflAllPosts.length
+    ? reflAllPosts.length + (reflAllPosts.length === 1 ? ' reflection' : ' reflections')
+    : '';
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="refl-empty">
+        <div class="refl-empty-icon">✦</div>
+        <div class="refl-empty-text">No reflections yet — be the first to share</div>
+      </div>`;
+    return;
+  }
+
+  // Newest first
+  const sorted = [...filtered].reverse();
+  grid.innerHTML = sorted.map((p, i) => `
+    <div class="refl-card" style="animation-delay:${i * 0.05}s">
+      <div class="refl-card-top">
+        <div class="refl-card-school">
+          <span class="refl-card-flag">${p.flag}</span>
+          <span class="refl-card-school-name">${escapeHtml(p.school)}</span>
+        </div>
+        <span class="refl-card-tag-badge">${escapeHtml(p.tag)}</span>
+      </div>
+      <div class="refl-card-text">"${escapeHtml(p.text)}"</div>
+      <div class="refl-card-footer">
+        <span class="refl-card-author">${escapeHtml(p.name)}</span>
+        <span class="refl-card-date">${p.date}</span>
+      </div>
+    </div>`).join('');
+}
+
+// ── Filter ────────────────────────────────────────────────
+function filterReflections(el) {
+  document.querySelectorAll('.refl-filter-tag').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  reflActiveFilter = el.dataset.filter;
+  renderBoard();
+}
+
+// ── Submit ────────────────────────────────────────────────
+async function submitReflection() {
+  const nameEl   = document.getElementById('refl-name');
+  const schoolEl = document.getElementById('refl-school');
+  const textEl   = document.getElementById('refl-text');
+  const statusEl = document.getElementById('refl-status');
+  const submitBtn = document.getElementById('refl-submit-btn');
+
+  const name   = nameEl.value.trim();
+  const school = schoolEl.value;
+  const text   = textEl.value.trim();
+
+  // Validate
+  if (!name) { showReflStatus('Please enter your name.', true); return; }
+  if (!school) { showReflStatus('Please select your school.', true); return; }
+  if (text.length < 10) { showReflStatus('Please write at least 10 characters.', true); return; }
+
+  const [schoolName, flag] = school.split('|');
+
+  const post = {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+    name,
+    school: schoolName,
+    flag,
+    tag: reflSelectedTag,
+    text,
+    date: new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+  };
+
+  submitBtn.disabled = true;
+  showReflStatus('Posting...', false);
+
+  try {
+    // Load latest, add new post, save back
+    let latest = [];
+    try {
+      const r = await window.storage.get(REFL_STORAGE_KEY, true);
+      if (r) latest = JSON.parse(r.value);
+    } catch(e) { latest = []; }
+
+    latest.push(post);
+    await window.storage.set(REFL_STORAGE_KEY, JSON.stringify(latest), true);
+
+    reflAllPosts = latest;
+    renderBoard();
+
+    // Reset form
+    nameEl.value = '';
+    textEl.value = '';
+    document.getElementById('refl-char-count').textContent = '0 / 280';
+    showReflStatus('Your reflection has been posted ✦', false);
+    setTimeout(() => showReflStatus('', false), 3500);
+  } catch(e) {
+    showReflStatus('Could not save. Please try again.', true);
+  } finally {
+    submitBtn.disabled = false;
+  }
+}
+
+function showReflStatus(msg, isError) {
+  const el = document.getElementById('refl-status');
+  el.textContent = msg;
+  el.className = 'refl-status' + (isError ? ' error' : '');
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 </script>
 
 
@@ -5275,5 +5809,102 @@ function closeAllSheets() {
 
 
 <div id="sheet-backdrop" onclick="closeAllSheets()"></div>
+
+<div id="reflections-overlay" role="dialog" aria-modal="true" aria-label="Reflections Board">
+  <div class="refl-panel">
+
+    <!-- Header -->
+    <div class="refl-header">
+      <div class="refl-header-left">
+        <div class="refl-eyebrow">Mapping Our Heritage</div>
+        <div class="refl-title">Reflections Board</div>
+      </div>
+      <div class="refl-header-right">
+        <span class="refl-post-count" id="refl-post-count"></span>
+        <button class="refl-close" onclick="closeReflections()" aria-label="Close">&#x2715;</button>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="refl-body">
+
+      <!-- Compose -->
+      <div class="refl-compose">
+        <div class="refl-compose-title">Share Your Reflection</div>
+
+        <div class="refl-field">
+          <label class="refl-label" for="refl-name">Your Name</label>
+          <input class="refl-input" id="refl-name" type="text"
+                 placeholder="Enter your name" maxlength="40" autocomplete="off">
+        </div>
+
+        <div class="refl-field">
+          <label class="refl-label" for="refl-school">Your School</label>
+          <select class="refl-select" id="refl-school">
+            <option value="">— Select your school —</option>
+            <option value="Lüleburgaz Atatürk Anadolu Lisesi|🇹🇷">🇹🇷 Lüleburgaz Atatürk Anadolu Lisesi</option>
+            <option value="Hacı Bektaş Veli Anadolu Lisesi|🇹🇷">🇹🇷 Hacı Bektaş Veli Anadolu Lisesi</option>
+            <option value="Bandırma Yavuz Sultan Selim Anadolu Lisesi|🇹🇷">🇹🇷 Bandırma Yavuz Sultan Selim Anadolu Lisesi</option>
+            <option value="IES Galileo Galilei|🇪🇸">🇪🇸 IES Galileo Galilei</option>
+            <option value="OEMUC ST. Naum Ohridski|🇲🇰">🇲🇰 OEMUC ST. Naum Ohridski</option>
+            <option value="EEEEK of Ikaria|🇬🇷">🇬🇷 EEEEK of Ikaria</option>
+            <option value="Special High School and Lyceum for Deaf & Hard of Hearing Pupils|🇬🇷">🇬🇷 Special High School — Thessaloniki</option>
+            <option value="Osnovna šola Sveti Jurij ob Ščavnici|🇸🇮">🇸🇮 Osnovna šola Sveti Jurij ob Ščavnici</option>
+            <option value="Základná škola s materskou školou J. Bakossa|🇸🇰">🇸🇰 Základná škola J. Bakossa</option>
+            <option value="Zespół Szkół Hotelarsko-Gastronomicznych w Gdyni|🇵🇱">🇵🇱 Zespół Szkół — Gdynia</option>
+            <option value="IISS Leonardo Da Vinci|🇮🇹">🇮🇹 IISS Leonardo Da Vinci</option>
+            <option value="Școala Gimnazială Nr. 8|🇷🇴">🇷🇴 Școala Gimnazială Nr. 8</option>
+            <option value="Základní škola Mělník|🇨🇿">🇨🇿 Základní škola Mělník</option>
+          </select>
+        </div>
+
+        <div class="refl-field">
+          <label class="refl-label">Tag your reflection</label>
+          <div class="refl-tags">
+            <button class="refl-tag selected" data-tag="What I Learned" onclick="selectTag(this)">What I Learned</button>
+            <button class="refl-tag" data-tag="My Favourite Site" onclick="selectTag(this)">My Favourite Site</button>
+            <button class="refl-tag" data-tag="What Surprised Me" onclick="selectTag(this)">What Surprised Me</button>
+            <button class="refl-tag" data-tag="Our Collaboration" onclick="selectTag(this)">Our Collaboration</button>
+          </div>
+        </div>
+
+        <div class="refl-field">
+          <label class="refl-label" for="refl-text">Your Reflection</label>
+          <textarea class="refl-textarea" id="refl-text"
+                    placeholder="Share a thought about the project, a heritage site that moved you, or what this collaboration has meant to you..."
+                    maxlength="280" oninput="reflCharCount(this)"></textarea>
+          <div class="refl-char-count" id="refl-char-count">0 / 280</div>
+        </div>
+
+        <button class="refl-submit" id="refl-submit-btn" onclick="submitReflection()">
+          Post Reflection
+        </button>
+        <div class="refl-status" id="refl-status"></div>
+      </div>
+
+      <!-- Board -->
+      <div class="refl-board">
+        <div class="refl-board-header">
+          <div class="refl-board-title">All Reflections</div>
+          <div class="refl-filter-tags" id="refl-filter-tags">
+            <button class="refl-filter-tag active" data-filter="all" onclick="filterReflections(this)">All</button>
+            <button class="refl-filter-tag" data-filter="What I Learned" onclick="filterReflections(this)">What I Learned</button>
+            <button class="refl-filter-tag" data-filter="My Favourite Site" onclick="filterReflections(this)">My Favourite Site</button>
+            <button class="refl-filter-tag" data-filter="What Surprised Me" onclick="filterReflections(this)">What Surprised Me</button>
+            <button class="refl-filter-tag" data-filter="Our Collaboration" onclick="filterReflections(this)">Our Collaboration</button>
+          </div>
+        </div>
+        <div class="refl-grid" id="refl-grid">
+          <div class="refl-loading">
+            <div class="refl-spinner"></div>
+            Loading reflections...
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /refl-body -->
+  </div><!-- /refl-panel -->
+</div><!-- /reflections-overlay -->
+
 </body>
 </html>
