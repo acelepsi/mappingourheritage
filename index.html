@@ -5495,15 +5495,17 @@ function closeAllSheets() {
 
 
 
+
+
 // ═══════════════════════════════════════════════════════════
 // REFLECTIONS BOARD — JSONBin backend
 // ═══════════════════════════════════════════════════════════
-const JSONBIN_MASTER = '$2a$10$Ef9taEhfhbwaBX7hAxCaM.2S6uZ/4/eMsyrUnIq1pxiKbae8TvFSO';
-const JSONBIN_ACCESS = '$2a$10$S.WUdGekBkYxZQTFSPh6OervHdZMPaCouDKkCBs6iD1dIy6UTAB6u';
-const JSONBIN_BASE   = 'https://api.jsonbin.io/v3';
-const JSONBIN_BIN_KEY = 'refl-bin-id-v1'; // stored in localStorage so all devices share same bin
+const JSONBIN_MASTER  = '$2a$10$Ef9taEhfhbwaBX7hAxCaM.2S6uZ/4/eMsyrUnIq1pxiKbae8TvFSO';
+const JSONBIN_ACCESS  = '$2a$10$S.WUdGekBkYxZQTFSPh6OervHdZMPaCouDKkCBs6iD1dIy6UTAB6u';
+const JSONBIN_BASE    = 'https://api.jsonbin.io/v3';
+const JSONBIN_BIN_KEY = 'moh-refl-bin-id';
 
-let reflAllPosts    = [];
+let reflAllPosts     = [];
 let reflActiveFilter = 'all';
 let reflSelectedTag  = 'What I Learned';
 let reflBinId        = null;
@@ -5524,7 +5526,7 @@ document.getElementById('reflections-overlay').addEventListener('click', functio
   if (e.target === this) closeReflections();
 });
 
-// ── Tag / filter helpers ──────────────────────────────────
+// ── Tag / filter / char counter ───────────────────────────
 function selectTag(el) {
   document.querySelectorAll('.refl-tag').forEach(t => t.classList.remove('selected'));
   el.classList.add('selected');
@@ -5543,54 +5545,86 @@ function filterReflections(el) {
   renderBoard();
 }
 
-// ── JSONBin helpers ───────────────────────────────────────
-function jsonbinHeaders(write) {
+// ── Fetch with timeout ────────────────────────────────────
+async function fetchWithTimeout(url, options, ms = 10000) {
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const res = await fetch(url, { ...options, signal: ctrl.signal });
+    clearTimeout(tid);
+    return res;
+  } catch(e) {
+    clearTimeout(tid);
+    throw e.name === 'AbortError' ? new Error('Request timed out after ' + ms + 'ms') : e;
+  }
+}
+
+// ── JSONBin headers ───────────────────────────────────────
+function jbHeaders(isWrite) {
   const h = {
     'Content-Type': 'application/json',
     'X-Master-Key': JSONBIN_MASTER,
     'X-Access-Key': JSONBIN_ACCESS
   };
-  if (!write) h['X-Bin-Meta'] = 'false'; // skip metadata on reads
+  if (!isWrite) h['X-Bin-Meta'] = 'false';
   return h;
 }
 
-async function getOrCreateBin() {
-  // Cache bin ID in localStorage so we don't create a new bin each time
-  if (!reflBinId) reflBinId = localStorage.getItem(JSONBIN_BIN_KEY);
+// ── Get or create bin ID ──────────────────────────────────
+async function getBinId() {
   if (reflBinId) return reflBinId;
+  reflBinId = localStorage.getItem(JSONBIN_BIN_KEY);
+  if (reflBinId) { console.log('[Reflections] Using cached bin:', reflBinId); return reflBinId; }
 
-  // Create a new bin
-  const res = await fetch(JSONBIN_BASE + '/b', {
+  console.log('[Reflections] Creating new bin...');
+  const res = await fetchWithTimeout(JSONBIN_BASE + '/b', {
     method: 'POST',
-    headers: { ...jsonbinHeaders(true), 'X-Bin-Name': 'MappingOurHeritage-Reflections', 'X-Bin-Private': 'false' },
+    headers: jbHeaders(true),
     body: JSON.stringify({ posts: [] })
   });
-  if (!res.ok) throw new Error('Failed to create bin: ' + res.status);
-  const data = await res.json();
+  const text = await res.text();
+  console.log('[Reflections] Create bin response (' + res.status + '):', text);
+  if (!res.ok) throw new Error('Create bin failed ' + res.status + ': ' + text);
+  const data = JSON.parse(text);
   reflBinId = data.metadata.id;
   localStorage.setItem(JSONBIN_BIN_KEY, reflBinId);
+  console.log('[Reflections] Bin created:', reflBinId);
   return reflBinId;
 }
 
+// ── Read posts ────────────────────────────────────────────
 async function readPosts() {
-  const binId = await getOrCreateBin();
-  const res = await fetch(JSONBIN_BASE + '/b/' + binId + '/latest', {
-    headers: jsonbinHeaders(false)
+  const binId = await getBinId();
+  console.log('[Reflections] Reading from bin:', binId);
+  const res = await fetchWithTimeout(JSONBIN_BASE + '/b/' + binId + '/latest', {
+    method: 'GET',
+    headers: jbHeaders(false)
   });
-  if (!res.ok) throw new Error('Read failed: ' + res.status);
-  const data = await res.json();
-  return Array.isArray(data.record && data.record.posts) ? data.record.posts :
-         Array.isArray(data.posts) ? data.posts : [];
+  const text = await res.text();
+  console.log('[Reflections] Read response (' + res.status + '):', text.slice(0, 200));
+  if (!res.ok) throw new Error('Read failed ' + res.status + ': ' + text);
+  const data = JSON.parse(text);
+  // Handle both { record: { posts: [] } } and { posts: [] }
+  const posts = (data.record && Array.isArray(data.record.posts)) ? data.record.posts
+              : Array.isArray(data.posts) ? data.posts
+              : Array.isArray(data.record) ? data.record
+              : [];
+  console.log('[Reflections] Loaded', posts.length, 'posts');
+  return posts;
 }
 
+// ── Write posts ───────────────────────────────────────────
 async function writePosts(posts) {
-  const binId = await getOrCreateBin();
-  const res = await fetch(JSONBIN_BASE + '/b/' + binId, {
+  const binId = await getBinId();
+  console.log('[Reflections] Writing', posts.length, 'posts to bin:', binId);
+  const res = await fetchWithTimeout(JSONBIN_BASE + '/b/' + binId, {
     method: 'PUT',
-    headers: jsonbinHeaders(true),
+    headers: jbHeaders(true),
     body: JSON.stringify({ posts })
   });
-  if (!res.ok) throw new Error('Write failed: ' + res.status);
+  const text = await res.text();
+  console.log('[Reflections] Write response (' + res.status + '):', text.slice(0, 200));
+  if (!res.ok) throw new Error('Write failed ' + res.status + ': ' + text);
   return true;
 }
 
@@ -5600,31 +5634,24 @@ async function loadReflections() {
   grid.innerHTML = '<div class="refl-loading"><div class="refl-spinner"></div>Loading reflections...</div>';
   try {
     reflAllPosts = await readPosts();
+    renderBoard();
   } catch(e) {
-    reflAllPosts = [];
-    grid.innerHTML = '<div class="refl-empty"><div class="refl-empty-icon">⚠</div><div class="refl-empty-text">Could not load reflections — please check your connection</div></div>';
-    return;
+    console.error('[Reflections] Load error:', e);
+    grid.innerHTML = '<div class="refl-empty"><div class="refl-empty-icon">⚠</div><div class="refl-empty-text">' + escapeHtml(e.message) + '</div></div>';
   }
-  renderBoard();
 }
 
 function renderBoard() {
   const grid    = document.getElementById('refl-grid');
   const countEl = document.getElementById('refl-post-count');
-
-  const filtered = reflActiveFilter === 'all'
-    ? reflAllPosts
+  const filtered = reflActiveFilter === 'all' ? reflAllPosts
     : reflAllPosts.filter(p => p.tag === reflActiveFilter);
-
   countEl.textContent = reflAllPosts.length
-    ? reflAllPosts.length + (reflAllPosts.length === 1 ? ' reflection' : ' reflections')
-    : '';
-
+    ? reflAllPosts.length + (reflAllPosts.length === 1 ? ' reflection' : ' reflections') : '';
   if (filtered.length === 0) {
     grid.innerHTML = '<div class="refl-empty"><div class="refl-empty-icon">✦</div><div class="refl-empty-text">No reflections yet — be the first to share</div></div>';
     return;
   }
-
   const sorted = [...filtered].reverse();
   grid.innerHTML = sorted.map((p, i) => `
     <div class="refl-card" style="animation-delay:${i * 0.05}s">
@@ -5649,41 +5676,31 @@ async function submitReflection() {
   const schoolVal = document.getElementById('refl-school').value;
   const text      = document.getElementById('refl-text').value.trim();
   const submitBtn = document.getElementById('refl-submit-btn');
-
-  if (!name)           { showReflStatus('Please enter your name.', true);         return; }
-  if (!schoolVal)      { showReflStatus('Please select your school.', true);       return; }
-  if (text.length < 10){ showReflStatus('Please write at least 10 characters.', true); return; }
-
+  if (!name)            { showReflStatus('Please enter your name.', true);          return; }
+  if (!schoolVal)       { showReflStatus('Please select your school.', true);        return; }
+  if (text.length < 10) { showReflStatus('Please write at least 10 characters.', true); return; }
   const [schoolName, flag] = schoolVal.split('|');
-
   const post = {
-    id:     Date.now().toString(36) + Math.random().toString(36).slice(2,6),
-    name,
-    school: schoolName,
-    flag,
-    tag:    reflSelectedTag,
-    text,
-    date:   new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+    id:   Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+    name, school: schoolName, flag, tag: reflSelectedTag, text,
+    date: new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
   };
-
   submitBtn.disabled = true;
   showReflStatus('Posting…', false);
-
   try {
     const latest = await readPosts();
     latest.push(post);
     await writePosts(latest);
     reflAllPosts = latest;
     renderBoard();
-
-    // Reset form
-    document.getElementById('refl-name').value  = '';
-    document.getElementById('refl-text').value  = '';
+    document.getElementById('refl-name').value = '';
+    document.getElementById('refl-text').value = '';
     document.getElementById('refl-char-count').textContent = '0 / 280';
     showReflStatus('Your reflection has been posted ✦', false);
     setTimeout(() => showReflStatus('', false), 3500);
   } catch(e) {
-    showReflStatus('Could not save. Please try again.', true);
+    console.error('[Reflections] Submit error:', e);
+    showReflStatus('Error: ' + e.message, true);
   } finally {
     submitBtn.disabled = false;
   }
@@ -5694,20 +5711,14 @@ function showReflStatus(msg, isError) {
   el.textContent = msg;
   el.className = 'refl-status' + (isError ? ' error' : '');
 }
-
 function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
-
-
 function escapeText(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
+  const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
 }
+
+
 </script>
 
 
