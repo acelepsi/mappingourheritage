@@ -5452,13 +5452,19 @@ function closeAllSheets() {
 
 
 // ═══════════════════════════════════════════════════════════
-// REFLECTIONS BOARD
+// REFLECTIONS BOARD — JSONBin backend
 // ═══════════════════════════════════════════════════════════
-const REFL_STORAGE_KEY = 'reflections-board-v1';
-let reflAllPosts = [];
-let reflActiveFilter = 'all';
-let reflSelectedTag = 'What I Learned';
+const JSONBIN_MASTER = '$2a$10$Ef9taEhfhbwaBX7hAxCaM.2S6uZ/4/eMsyrUnIq1pxiKbae8TvFSO';
+const JSONBIN_ACCESS = '$2a$10$S.WUdGekBkYxZQTFSPh6OervHdZMPaCouDKkCBs6iD1dIy6UTAB6u';
+const JSONBIN_BASE   = 'https://api.jsonbin.io/v3';
+const JSONBIN_BIN_KEY = 'refl-bin-id-v1'; // stored in localStorage so all devices share same bin
 
+let reflAllPosts    = [];
+let reflActiveFilter = 'all';
+let reflSelectedTag  = 'What I Learned';
+let reflBinId        = null;
+
+// ── Open / close ──────────────────────────────────────────
 function openReflections() {
   document.getElementById('reflections-overlay').classList.add('open');
   const footer = document.getElementById('site-footer');
@@ -5474,37 +5480,92 @@ document.getElementById('reflections-overlay').addEventListener('click', functio
   if (e.target === this) closeReflections();
 });
 
-// ── Tag selection ─────────────────────────────────────────
+// ── Tag / filter helpers ──────────────────────────────────
 function selectTag(el) {
   document.querySelectorAll('.refl-tag').forEach(t => t.classList.remove('selected'));
   el.classList.add('selected');
   reflSelectedTag = el.dataset.tag;
 }
-
-// ── Character counter ─────────────────────────────────────
 function reflCharCount(ta) {
   const n = ta.value.length;
   const el = document.getElementById('refl-char-count');
   el.textContent = n + ' / 280';
   el.className = 'refl-char-count' + (n > 240 ? ' near-limit' : '');
 }
+function filterReflections(el) {
+  document.querySelectorAll('.refl-filter-tag').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  reflActiveFilter = el.dataset.filter;
+  renderBoard();
+}
 
-// ── Load posts from storage ───────────────────────────────
+// ── JSONBin helpers ───────────────────────────────────────
+function jsonbinHeaders(write) {
+  const h = {
+    'Content-Type': 'application/json',
+    'X-Master-Key': JSONBIN_MASTER,
+    'X-Access-Key': JSONBIN_ACCESS
+  };
+  if (!write) h['X-Bin-Meta'] = 'false'; // skip metadata on reads
+  return h;
+}
+
+async function getOrCreateBin() {
+  // Cache bin ID in localStorage so we don't create a new bin each time
+  if (!reflBinId) reflBinId = localStorage.getItem(JSONBIN_BIN_KEY);
+  if (reflBinId) return reflBinId;
+
+  // Create a new bin
+  const res = await fetch(JSONBIN_BASE + '/b', {
+    method: 'POST',
+    headers: { ...jsonbinHeaders(true), 'X-Bin-Name': 'MappingOurHeritage-Reflections', 'X-Bin-Private': 'false' },
+    body: JSON.stringify({ posts: [] })
+  });
+  if (!res.ok) throw new Error('Failed to create bin: ' + res.status);
+  const data = await res.json();
+  reflBinId = data.metadata.id;
+  localStorage.setItem(JSONBIN_BIN_KEY, reflBinId);
+  return reflBinId;
+}
+
+async function readPosts() {
+  const binId = await getOrCreateBin();
+  const res = await fetch(JSONBIN_BASE + '/b/' + binId + '/latest', {
+    headers: jsonbinHeaders(false)
+  });
+  if (!res.ok) throw new Error('Read failed: ' + res.status);
+  const data = await res.json();
+  return Array.isArray(data.record && data.record.posts) ? data.record.posts :
+         Array.isArray(data.posts) ? data.posts : [];
+}
+
+async function writePosts(posts) {
+  const binId = await getOrCreateBin();
+  const res = await fetch(JSONBIN_BASE + '/b/' + binId, {
+    method: 'PUT',
+    headers: jsonbinHeaders(true),
+    body: JSON.stringify({ posts })
+  });
+  if (!res.ok) throw new Error('Write failed: ' + res.status);
+  return true;
+}
+
+// ── Load & render ─────────────────────────────────────────
 async function loadReflections() {
   const grid = document.getElementById('refl-grid');
   grid.innerHTML = '<div class="refl-loading"><div class="refl-spinner"></div>Loading reflections...</div>';
   try {
-    const result = await window.storage.get(REFL_STORAGE_KEY, true);
-    reflAllPosts = result ? JSON.parse(result.value) : [];
+    reflAllPosts = await readPosts();
   } catch(e) {
     reflAllPosts = [];
+    grid.innerHTML = '<div class="refl-empty"><div class="refl-empty-icon">⚠</div><div class="refl-empty-text">Could not load reflections — please check your connection</div></div>';
+    return;
   }
   renderBoard();
 }
 
-// ── Render cards ──────────────────────────────────────────
 function renderBoard() {
-  const grid = document.getElementById('refl-grid');
+  const grid    = document.getElementById('refl-grid');
   const countEl = document.getElementById('refl-post-count');
 
   const filtered = reflActiveFilter === 'all'
@@ -5516,15 +5577,10 @@ function renderBoard() {
     : '';
 
   if (filtered.length === 0) {
-    grid.innerHTML = `
-      <div class="refl-empty">
-        <div class="refl-empty-icon">✦</div>
-        <div class="refl-empty-text">No reflections yet — be the first to share</div>
-      </div>`;
+    grid.innerHTML = '<div class="refl-empty"><div class="refl-empty-icon">✦</div><div class="refl-empty-text">No reflections yet — be the first to share</div></div>';
     return;
   }
 
-  // Newest first
   const sorted = [...filtered].reverse();
   grid.innerHTML = sorted.map((p, i) => `
     <div class="refl-card" style="animation-delay:${i * 0.05}s">
@@ -5543,63 +5599,42 @@ function renderBoard() {
     </div>`).join('');
 }
 
-// ── Filter ────────────────────────────────────────────────
-function filterReflections(el) {
-  document.querySelectorAll('.refl-filter-tag').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  reflActiveFilter = el.dataset.filter;
-  renderBoard();
-}
-
 // ── Submit ────────────────────────────────────────────────
 async function submitReflection() {
-  const nameEl   = document.getElementById('refl-name');
-  const schoolEl = document.getElementById('refl-school');
-  const textEl   = document.getElementById('refl-text');
-  const statusEl = document.getElementById('refl-status');
+  const name      = document.getElementById('refl-name').value.trim();
+  const schoolVal = document.getElementById('refl-school').value;
+  const text      = document.getElementById('refl-text').value.trim();
   const submitBtn = document.getElementById('refl-submit-btn');
 
-  const name   = nameEl.value.trim();
-  const school = schoolEl.value;
-  const text   = textEl.value.trim();
+  if (!name)           { showReflStatus('Please enter your name.', true);         return; }
+  if (!schoolVal)      { showReflStatus('Please select your school.', true);       return; }
+  if (text.length < 10){ showReflStatus('Please write at least 10 characters.', true); return; }
 
-  // Validate
-  if (!name) { showReflStatus('Please enter your name.', true); return; }
-  if (!school) { showReflStatus('Please select your school.', true); return; }
-  if (text.length < 10) { showReflStatus('Please write at least 10 characters.', true); return; }
-
-  const [schoolName, flag] = school.split('|');
+  const [schoolName, flag] = schoolVal.split('|');
 
   const post = {
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+    id:     Date.now().toString(36) + Math.random().toString(36).slice(2,6),
     name,
     school: schoolName,
     flag,
-    tag: reflSelectedTag,
+    tag:    reflSelectedTag,
     text,
-    date: new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+    date:   new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
   };
 
   submitBtn.disabled = true;
-  showReflStatus('Posting...', false);
+  showReflStatus('Posting…', false);
 
   try {
-    // Load latest, add new post, save back
-    let latest = [];
-    try {
-      const r = await window.storage.get(REFL_STORAGE_KEY, true);
-      if (r) latest = JSON.parse(r.value);
-    } catch(e) { latest = []; }
-
+    const latest = await readPosts();
     latest.push(post);
-    await window.storage.set(REFL_STORAGE_KEY, JSON.stringify(latest), true);
-
+    await writePosts(latest);
     reflAllPosts = latest;
     renderBoard();
 
     // Reset form
-    nameEl.value = '';
-    textEl.value = '';
+    document.getElementById('refl-name').value  = '';
+    document.getElementById('refl-text').value  = '';
     document.getElementById('refl-char-count').textContent = '0 / 280';
     showReflStatus('Your reflection has been posted ✦', false);
     setTimeout(() => showReflStatus('', false), 3500);
@@ -5621,6 +5656,7 @@ function escapeHtml(s) {
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
 
 </script>
 
