@@ -5564,7 +5564,7 @@ function jbHeaders(isWrite) {
     'X-Master-Key': JSONBIN_MASTER,
     'X-Access-Key': JSONBIN_ACCESS
   };
-  if (!isWrite) h['X-Bin-Meta'] = 'false';
+  // X-Bin-Meta omitted for free tier compatibility
   return h;
 }
 
@@ -5580,7 +5580,7 @@ async function getBinId() {
 async function readPosts() {
   const binId = await getBinId();
   console.log('[Reflections] Reading from bin:', binId);
-  const res = await fetchWithTimeout(JSONBIN_BASE + '/b/' + binId + '/latest', {
+  const res = await fetchWithTimeout(JSONBIN_BASE + '/b/' + binId, {
     method: 'GET',
     headers: jbHeaders(false)
   });
