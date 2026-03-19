@@ -836,35 +836,6 @@
 .footer-eu-flag {
   flex-shrink: 0;
 }
-.footer-eu-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-.footer-cofunded {
-  font-family: 'Cinzel', serif;
-  font-size: 7.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
-  line-height: 1;
-}
-.footer-eu-name {
-  font-family: 'Cinzel', serif;
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  font-weight: 600;
-  color: rgba(255,255,255,0.7);
-  line-height: 1;
-}
-.footer-erasmus-badge {
-  font-family: 'Cinzel', serif;
-  font-size: 7px;
-  letter-spacing: 0.1em;
-  color: rgba(201,168,76,0.6);
-  line-height: 1;
-  margin-top: 2px;
-}
 .footer-divider {
   width: 1px;
   height: 28px;
@@ -1376,6 +1347,16 @@ header {
   flex-shrink: 0;
   filter: drop-shadow(0 1px 4px rgba(0,0,0,0.4));
 }
+.footer-project-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 6px rgba(0,0,0,0.5));
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+.footer-project-logo:hover { opacity: 1; }
 
 /* On very small screens — icon-only header buttons */
 @media (max-width: 480px) {
@@ -5773,11 +5754,8 @@ function escapeText(s) {
     <div class="footer-eu-block">
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/250px-Flag_of_Europe.svg.png"
            alt="European Union flag" class="footer-eu-flag-img">
-      <div class="footer-eu-text">
-        <span class="footer-cofunded">Co-funded by the</span>
-        <span class="footer-eu-name">European Union</span>
-        <span class="footer-erasmus-badge">Erasmus+ Programme</span>
-      </div>
+      <img src="https://i.imgur.com/zjQN6LC.png"
+           alt="Mapping Our Heritage project logo" class="footer-project-logo">
     </div>
     </div>
     <div class="footer-divider"></div>
