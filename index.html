@@ -3,7 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mapping Our Heritage</title>
+<title>Mapping Our Heritage — An eTwinning Project</title>
+
+<!-- ── Primary SEO ── -->
+<meta name="description" content="An eTwinning collaboration between 13 schools across 7 European countries, exploring and mapping UNESCO World Heritage Sites through student research and digital storytelling.">
+<meta name="keywords" content="UNESCO World Heritage, eTwinning, Erasmus+, European schools, heritage sites, Turkey, Greece, Italy, Spain, Slovenia, North Macedonia, Poland, student project">
+<meta name="author" content="Mapping Our Heritage eTwinning Project">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://mappingourheritage.com/">
+
+<!-- ── Open Graph (Facebook, WhatsApp, LinkedIn) ── -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mappingourheritage.com/">
+<meta property="og:title" content="Mapping Our Heritage — An eTwinning Project">
+<meta property="og:description" content="Seven countries. Thirteen schools. One shared mission — to explore the UNESCO World Heritage Sites that define our cultures and bring them to life for students across Europe.">
+<meta property="og:image" content="https://i.imgur.com/zjQN6LC.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Mapping Our Heritage project logo">
+<meta property="og:site_name" content="Mapping Our Heritage">
+<meta property="og:locale" content="en_GB">
+
+<!-- ── Twitter / X Card ── -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://mappingourheritage.com/">
+<meta name="twitter:title" content="Mapping Our Heritage — An eTwinning Project">
+<meta name="twitter:description" content="Seven countries. Thirteen schools. One shared mission — exploring UNESCO World Heritage Sites across Europe.">
+<meta name="twitter:image" content="https://i.imgur.com/zjQN6LC.png">
+<meta name="twitter:image:alt" content="Mapping Our Heritage project logo">
+
+<!-- ── Favicon (project logo as SVG data URI fallback + png) ── -->
+<link rel="icon" type="image/png" href="https://i.imgur.com/zjQN6LC.png">
+<link rel="apple-touch-icon" href="https://i.imgur.com/zjQN6LC.png">
+
+<!-- ── Theme colour (browser UI on mobile) ── -->
+<meta name="theme-color" content="#0e0c08">
+
+<!-- ── Structured Data (JSON-LD) ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Mapping Our Heritage",
+  "alternateName": "Mapping Our Heritage eTwinning Project",
+  "url": "https://mappingourheritage.com/",
+  "description": "An eTwinning collaboration between 13 schools across 7 European countries, exploring UNESCO World Heritage Sites through student research and digital storytelling.",
+  "image": "https://i.imgur.com/zjQN6LC.png",
+  "inLanguage": "en",
+  "keywords": "UNESCO, World Heritage, eTwinning, Erasmus+, European schools, heritage",
+  "creator": {
+    "@type": "Organization",
+    "name": "Mapping Our Heritage eTwinning Consortium",
+    "url": "https://mappingourheritage.com/"
+  }
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -587,10 +641,12 @@
   background: rgba(255,255,255,0.25);
 }
 
-/* eTwinning SVG logo */
-.etwinning-logo-svg {
-  height: 44px;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+/* eTwinning logo image */
+.etwinning-logo-img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)) brightness(1.08);
 }
 
 /* EU Flag SVG */
@@ -788,6 +844,392 @@
   filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
 }
 
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════ */
+#site-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 9999;
+  background: linear-gradient(to top, rgba(6,5,3,0.98) 60%, rgba(6,5,3,0));
+  padding: 18px 36px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  pointer-events: none; /* let map clicks through by default */
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+/* Fade in after landing is dismissed */
+#site-footer.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Left — EU + eTwinning logos */
+.footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+.footer-eu-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer-eu-flag {
+  flex-shrink: 0;
+}
+.footer-eu-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.footer-cofunded {
+  font-family: 'Cinzel', serif;
+  font-size: 7.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  line-height: 1;
+}
+.footer-eu-name {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  line-height: 1;
+}
+.footer-erasmus-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 7px;
+  letter-spacing: 0.1em;
+  color: rgba(201,168,76,0.6);
+  line-height: 1;
+  margin-top: 2px;
+}
+.footer-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255,255,255,0.12);
+  flex-shrink: 0;
+}
+.footer-etwinning-img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.75;
+  filter: brightness(1.1);
+  transition: opacity 0.2s;
+}
+.footer-etwinning-img:hover { opacity: 1; }
+
+/* Centre — copyright + disclaimer */
+.footer-center {
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+}
+.footer-copyright {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: rgba(201,168,76,0.55);
+  margin-bottom: 3px;
+}
+.footer-disclaimer {
+  font-size: 9px;
+  color: rgba(255,255,255,0.25);
+  line-height: 1.5;
+  font-style: italic;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* Right — TwinSpace link */
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.footer-twinspace-label {
+  font-family: 'Cinzel', serif;
+  font-size: 7.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+.footer-twinspace-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(201,168,76,0.7);
+  text-decoration: none;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.footer-twinspace-link:hover { color: rgba(201,168,76,1); }
+.footer-twinspace-link svg {
+  width: 11px; height: 11px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   HEADER BUTTONS
+═══════════════════════════════════════════════════════════ */
+header {
+  pointer-events: auto; /* override existing none */
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border: 1px solid rgba(201,168,76,0.28);
+  background: rgba(14,12,8,0.6);
+  color: rgba(201,168,76,0.7);
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease, color 0.25s, border-color 0.25s, background 0.25s;
+}
+.header-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.header-btn:hover {
+  color: var(--gold-light);
+  border-color: rgba(201,168,76,0.65);
+  background: rgba(201,168,76,0.1);
+}
+.header-btn svg {
+  width: 11px; height: 11px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ABOUT PANEL
+═══════════════════════════════════════════════════════════ */
+#about-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(6,5,3,0.75);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+#about-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.about-card {
+  position: relative;
+  background: linear-gradient(150deg, #1e1b12 0%, #141108 100%);
+  border: 1px solid rgba(201,168,76,0.2);
+  width: 100%;
+  max-width: 860px;
+  max-height: 88vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201,168,76,0.2) transparent;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+  transform: translateY(24px) scale(0.98);
+  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+}
+#about-overlay.open .about-card {
+  transform: translateY(0) scale(1);
+}
+
+/* Card header band */
+.about-hero {
+  position: relative;
+  height: 180px;
+  background:
+    linear-gradient(to bottom, rgba(14,12,8,0.3) 0%, rgba(14,12,8,0.92) 100%),
+    url('https://whc.unesco.org/uploads/thumbs/news_2043-1200-630-20191014144910.jpg') center/cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 48px 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.about-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.8);
+  margin-bottom: 8px;
+}
+.about-title {
+  font-family: 'Cinzel', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+}
+.about-close {
+  position: absolute;
+  top: 16px; right: 18px;
+  background: rgba(10,8,4,0.65);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: all 0.2s;
+}
+.about-close:hover {
+  background: rgba(201,168,76,0.18);
+  border-color: var(--gold);
+}
+
+/* Card body */
+.about-body {
+  padding: 40px 48px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px 48px;
+}
+@media (max-width: 680px) {
+  .about-body { grid-template-columns: 1fr; padding: 28px 24px 36px; }
+  .about-hero  { padding: 0 24px 22px; }
+  .about-intro { grid-column: 1; }
+}
+.about-intro {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.about-intro p {
+  font-family: 'Crimson Pro', serif;
+  font-size: 17px;
+  line-height: 1.85;
+  color: rgba(240,232,208,0.78);
+}
+.about-intro strong {
+  color: rgba(201,168,76,0.9);
+  font-weight: 400;
+}
+
+/* Section */
+.about-section {}
+.about-section-icon {
+  font-size: 22px;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+.about-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+.about-section ul {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.about-section li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(240,232,208,0.72);
+}
+.about-section li::before {
+  content: '';
+  width: 5px; height: 5px;
+  border: 1px solid rgba(201,168,76,0.6);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+/* Partners strip */
+.about-partners {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(201,168,76,0.1);
+  flex-wrap: wrap;
+}
+.about-partner-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.about-partner-flag { font-size: 26px; line-height: 1; }
+.about-partner-name {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.5);
+  text-align: center;
+}
+
 </style>
 </head>
 <body style="overflow:hidden">
@@ -814,20 +1256,9 @@
     <div class="lp-logos">
       <!-- eTwinning wordmark (inline SVG) -->
       <div class="lp-logo-item">
-        <svg class="etwinning-logo-svg" viewBox="0 0 220 56" xmlns="http://www.w3.org/2000/svg" aria-label="eTwinning">
-          <!-- Butterfly / twin leaves symbol -->
-          <g transform="translate(0,4)">
-            <ellipse cx="18" cy="24" rx="14" ry="9" fill="#00AEEF" transform="rotate(-25,18,24)" opacity="0.92"/>
-            <ellipse cx="36" cy="24" rx="14" ry="9" fill="#009CDE" transform="rotate(25,36,24)" opacity="0.85"/>
-            <ellipse cx="18" cy="24" rx="9" ry="5.5" fill="#fff" transform="rotate(-25,18,24)" opacity="0.18"/>
-            <ellipse cx="36" cy="24" rx="9" ry="5.5" fill="#fff" transform="rotate(25,36,24)" opacity="0.14"/>
-            <circle cx="27" cy="24" r="3.5" fill="#005A9C"/>
-          </g>
-          <!-- Wordmark -->
-          <text x="60" y="22" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#fff" letter-spacing="1">eTwinning</text>
-          <text x="60" y="37" font-family="Arial, sans-serif" font-size="8.5" font-weight="400" fill="rgba(255,255,255,0.65)" letter-spacing="0.5">European School</text>
-          <text x="60" y="48" font-family="Arial, sans-serif" font-size="8.5" font-weight="400" fill="rgba(255,255,255,0.65)" letter-spacing="0.5">Education Platform</text>
-        </svg>
+        <img src="https://www.gazikoleji.k12.tr/upload/menu_resim/20240514-161042-1715692242-858314884.png"
+             alt="eTwinning" class="etwinning-logo-img"
+             onerror="this.style.display='none'">
       </div>
 
       <div class="lp-logo-divider"></div>
@@ -912,8 +1343,20 @@
 
 
 <header>
-  <div class="header-title">Mapping Our Heritage</div>
-  <div class="header-sub">UNESCO World Heritage Sites — An E-Twinning Project</div>
+  <div class="header-left">
+    <button class="header-btn" id="home-btn" onclick="backToLanding()" aria-label="Back to landing page">
+      <svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg>
+      Home
+    </button>
+    <div class="header-title">Mapping Our Heritage</div>
+  </div>
+  <div class="header-right">
+    <div class="header-sub">UNESCO World Heritage Sites — An E-Twinning Project</div>
+    <button class="header-btn" id="about-btn" onclick="openAbout()" aria-label="About the project">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      About
+    </button>
+  </div>
 </header>
 
 <div id="map-container">
@@ -4343,7 +4786,59 @@ function enterSite() {
     landing.style.display = 'none';
     document.body.style.overflow = '';
   }, 900);
+  // Show footer and header buttons as landing fades out
+  setTimeout(() => {
+    const footer = document.getElementById('site-footer');
+    if (footer) footer.classList.add('visible');
+    document.querySelectorAll('.header-btn').forEach(b => b.classList.add('visible'));
+  }, 400);
 }
+
+
+
+// Show footer — triggered by enterSite(), or immediately if landing is already gone
+(function() {
+  const footer = document.getElementById('site-footer');
+  const landing = document.getElementById('landing');
+  if (!footer) return;
+  if (!landing || landing.style.display === 'none') {
+    footer.classList.add('visible');
+  }
+  // enterSite() handles the normal flow via its own setTimeout
+})();
+
+
+
+// ── Back to landing ───────────────────────────────────────────────────────────
+function backToLanding() {
+  const landing = document.getElementById('landing');
+  const footer  = document.getElementById('site-footer');
+  if (!landing) return;
+  landing.style.display = 'flex';
+  // Force reflow so transition fires
+  landing.offsetHeight;
+  landing.classList.remove('fade-out');
+  document.body.style.overflow = 'hidden';
+  // Hide footer and header buttons
+  if (footer) footer.classList.remove('visible');
+  document.querySelectorAll('.header-btn').forEach(b => b.classList.remove('visible'));
+}
+
+// ── About panel ───────────────────────────────────────────────────────────────
+function openAbout() {
+  document.getElementById('about-overlay').classList.add('open');
+}
+function closeAbout() {
+  document.getElementById('about-overlay').classList.remove('open');
+}
+// Close on backdrop click
+document.getElementById('about-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeAbout();
+});
+// Close on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeAbout();
+});
 
 </script>
 
@@ -4390,6 +4885,158 @@ function enterSite() {
   </div>
   <div class="cn-list" id="cn-list"></div>
 </div>
+
+
+<footer id="site-footer" role="contentinfo" aria-label="Site footer">
+
+  <!-- Left: EU co-funding + eTwinning -->
+  <div class="footer-logos">
+    <div class="footer-eu-block">
+      <svg width="40" height="27" viewBox="0 0 40 27" xmlns="http://www.w3.org/2000/svg" aria-label="European Union flag" class="footer-eu-flag">
+  <rect width="40" height="27" fill="#003399"/>
+  <g fill="#FFCC00" transform="translate(20,13.5)">
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(0) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(30) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(60) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(90) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(120) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(150) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(180) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(210) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(240) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(270) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(300) translate(0,-7.5) scale(0.72)"/>
+    <polygon points="0,-5.4 0.63,-1.95 3.25,-3.24 1.44,-0.68 3.95,0.74 0.95,0.74 1.58,4.86 0,2.16 -1.58,4.86 -0.95,0.74 -3.95,0.74 -1.44,-0.68 -3.25,-3.24 -0.63,-1.95" transform="rotate(330) translate(0,-7.5) scale(0.72)"/>
+  </g>
+</svg>
+      <div class="footer-eu-text">
+        <span class="footer-cofunded">Co-funded by the</span>
+        <span class="footer-eu-name">European Union</span>
+        <span class="footer-erasmus-badge">Erasmus+ Programme</span>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <img class="footer-etwinning-img"
+         src="https://www.gazikoleji.k12.tr/upload/menu_resim/20240514-161042-1715692242-858314884.png"
+         alt="eTwinning"
+         onerror="this.style.display='none'">
+  </div>
+
+  <!-- Centre: copyright + disclaimer -->
+  <div class="footer-center">
+    <div class="footer-copyright">© 2026 Mapping Our Heritage — An eTwinning Project</div>
+    <div class="footer-disclaimer">
+      Co-funded by the European Union. Views and opinions expressed are those of the authors only
+      and do not necessarily reflect those of the European Union or the European Education and
+      Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held
+      responsible for them.
+    </div>
+  </div>
+
+  <!-- Right: TwinSpace link -->
+  <div class="footer-right">
+    <span class="footer-twinspace-label">Our TwinSpace</span>
+    <a class="footer-twinspace-link"
+       href="https://school-education.ec.europa.eu/en/etwinning/projects/mapping-our-heritage/twinspace?prefLang=tr"
+       target="_blank" rel="noopener noreferrer" aria-label="Visit our TwinSpace on eTwinning">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/>
+      </svg>
+      Visit TwinSpace
+    </a>
+  </div>
+
+</footer>
+
+
+<div id="about-overlay" role="dialog" aria-modal="true" aria-label="About the project">
+  <div class="about-card">
+
+    <div class="about-hero">
+      <div class="about-eyebrow">An eTwinning Collaboration</div>
+      <div class="about-title">Mapping Our Heritage</div>
+      <button class="about-close" onclick="closeAbout()" aria-label="Close">&#x2715;</button>
+    </div>
+
+    <div class="about-body">
+
+      <!-- Intro -->
+      <div class="about-intro">
+        <p>
+          <strong>Mapping Our Heritage</strong> is a cross-border eTwinning project uniting
+          <strong>13 schools</strong> across <strong>7 European countries</strong> — Turkey, Greece,
+          Italy, Spain, Slovenia, North Macedonia and Poland. Together, students and teachers research,
+          document and celebrate the <strong>UNESCO World Heritage Sites</strong> that anchor their
+          communities to a shared European story. The project runs on the belief that heritage is not
+          a relic of the past but a living conversation between peoples — and that young people are
+          its most vital voice.
+        </p>
+      </div>
+
+      <!-- Project Goals -->
+      <div class="about-section">
+        <div class="about-section-icon">🎯</div>
+        <div class="about-section-title">Project Goals</div>
+        <ul>
+          <li>Create a collaborative digital platform that maps and showcases UNESCO World Heritage Sites across partner countries</li>
+          <li>Foster genuine cross-cultural dialogue by connecting students around shared monuments, landscapes and living traditions</li>
+          <li>Develop students' research, writing and digital literacy skills through authentic, project-based learning</li>
+          <li>Strengthen European identity by helping young people discover what their cultures hold in common as well as what makes each unique</li>
+          <li>Produce a lasting public resource that schools, families and communities can explore long after the project concludes</li>
+        </ul>
+      </div>
+
+      <!-- Pedagogical Objectives -->
+      <div class="about-section">
+        <div class="about-section-icon">📚</div>
+        <div class="about-section-title">Pedagogical Objectives</div>
+        <ul>
+          <li>Build intercultural competence through regular peer exchange and collaborative content creation across language boundaries</li>
+          <li>Develop critical thinking by encouraging students to investigate heritage from historical, ecological and social perspectives</li>
+          <li>Practise English as a shared working language in a meaningful, real-world context</li>
+          <li>Cultivate a sense of ownership and responsibility — students are authors, researchers and ambassadors, not passive learners</li>
+          <li>Encourage empathy and curiosity by placing students' own heritage in dialogue with that of their European peers</li>
+        </ul>
+      </div>
+
+      <!-- eTwinning Context -->
+      <div class="about-section">
+        <div class="about-section-icon">🤝</div>
+        <div class="about-section-title">eTwinning &amp; European Context</div>
+        <ul>
+          <li>This project is registered on the European School Education Platform (eTwinning), the world's largest community for school collaboration in Europe</li>
+          <li>It contributes to the EU's strategic objective of promoting European identity, cultural heritage awareness and active citizenship among young people</li>
+          <li>Co-funded by the Erasmus+ Programme of the European Union, reflecting a commitment to inclusive, high-quality education across borders</li>
+          <li>Partner schools collaborate in real time through the project's TwinSpace, sharing resources, research and creative work throughout the academic year</li>
+        </ul>
+      </div>
+
+      <!-- Togetherness -->
+      <div class="about-section">
+        <div class="about-section-icon">🌍</div>
+        <div class="about-section-title">The Spirit of Togetherness</div>
+        <ul>
+          <li>Every dot on this map represents not just a heritage site but a classroom — a group of students who made it their own through research and storytelling</li>
+          <li>We believe that learning about each other's monuments, traditions and landscapes is one of the most direct routes to mutual understanding</li>
+          <li>From the minarets of Edirne to the wooden churches of Małopolska, from the shores of Lake Ohrid to the trulli of Alberobello — we are different, and that difference is our greatest strength</li>
+          <li>This project is proof that young Europeans, when given the tools and the trust, will build something worth sharing</li>
+        </ul>
+      </div>
+
+      <!-- Partner countries -->
+      <div class="about-partners">
+        <div class="about-partner-item"><div class="about-partner-flag">🇹🇷</div><div class="about-partner-name">Turkey</div></div>
+        <div class="about-partner-item"><div class="about-partner-flag">🇬🇷</div><div class="about-partner-name">Greece</div></div>
+        <div class="about-partner-item"><div class="about-partner-flag">🇮🇹</div><div class="about-partner-name">Italy</div></div>
+        <div class="about-partner-item"><div class="about-partner-flag">🇪🇸</div><div class="about-partner-name">Spain</div></div>
+        <div class="about-partner-item"><div class="about-partner-flag">🇸🇮</div><div class="about-partner-name">Slovenia</div></div>
+        <div class="about-partner-item"><div class="about-partner-flag">🇲🇰</div><div class="about-partner-name">N. Macedonia</div></div>
+        <div class="about-partner-item"><div class="about-partner-flag">🇵🇱</div><div class="about-partner-name">Poland</div></div>
+      </div>
+
+    </div><!-- /about-body -->
+  </div><!-- /about-card -->
+</div><!-- /about-overlay -->
 
 </body>
 </html>
