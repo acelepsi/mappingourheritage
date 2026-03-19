@@ -5525,8 +5525,6 @@ function closeReflections() {
 document.getElementById('reflections-overlay').addEventListener('click', function(e) {
   if (e.target === this) closeReflections();
 });
-
-// ── Tag / filter / char counter ───────────────────────────
 function selectTag(el) {
   document.querySelectorAll('.refl-tag').forEach(t => t.classList.remove('selected'));
   el.classList.add('selected');
