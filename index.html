@@ -5517,6 +5517,11 @@ function openReflections() {
   document.getElementById('reflections-overlay').classList.add('open');
   const footer = document.getElementById('site-footer');
   if (footer) footer.classList.add('hidden-by-panel');
+  // Reset filter to ALL each time board opens
+  reflActiveFilter = 'all';
+  document.querySelectorAll('.refl-filter-tag').forEach(t => t.classList.remove('active'));
+  var allBtn = document.querySelector('.refl-filter-tag[data-filter="all"]');
+  if (allBtn) allBtn.classList.add('active');
   loadReflections();
 }
 function closeReflections() {
