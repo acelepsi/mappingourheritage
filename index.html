@@ -223,37 +223,6 @@
 
 
   /* ===== TEAMS SIDEBAR ===== */
-  #teams-tab {
-    position: fixed;
-    left: 0; top: 50%;
-    transform: translateY(-50%);
-    z-index: 150;
-    writing-mode: vertical-rl;
-    background: linear-gradient(180deg, #1c1910 0%, #141108 100%);
-    border: 1px solid rgba(201,168,76,0.25);
-    border-left: none;
-    padding: 18px 10px;
-    cursor: pointer;
-    font-family: 'Cinzel', serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    transition: all 0.25s;
-    border-radius: 0 6px 6px 0;
-    box-shadow: 3px 0 20px rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    user-select: none;
-  }
-  #teams-tab:hover {
-    background: rgba(201,168,76,0.12);
-    border-color: rgba(201,168,76,0.5);
-    color: var(--gold-light);
-    padding-left: 14px;
-  }
-  #teams-tab .tab-icon { writing-mode: horizontal-tb; font-size: 15px; margin-bottom: 4px; }
 
   /* Main panel */
   #teams-panel {
@@ -480,22 +449,6 @@
 
 
   /* ===== COUNTRY NAV ===== */
-  #country-nav-tab {
-    position: fixed; right: 0; top: 50%; transform: translateY(-50%);
-    z-index: 150; writing-mode: vertical-rl;
-    background: linear-gradient(180deg, #1c1910 0%, #141108 100%);
-    border: 1px solid rgba(201,168,76,0.25); border-right: none;
-    padding: 18px 10px; cursor: pointer;
-    font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 3px;
-    text-transform: uppercase; color: var(--gold); transition: all 0.25s;
-    border-radius: 6px 0 0 6px; box-shadow: -3px 0 20px rgba(0,0,0,0.4);
-    display: flex; align-items: center; gap: 10px; user-select: none;
-  }
-  #country-nav-tab:hover {
-    background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.5);
-    color: var(--gold-light); padding-right: 14px;
-  }
-  #country-nav-tab .tab-icon { writing-mode: horizontal-tb; font-size: 15px; margin-bottom: 4px; }
   #country-nav-panel {
     position: fixed; right: 0; top: 0; width: 260px; height: 100vh;
     background: linear-gradient(160deg, #1c1910 0%, #100e08 100%);
@@ -1270,9 +1223,7 @@ header {
   }
   .header-btn svg { width: 10px; height: 10px; }
 
-  /* ── Desktop side tabs — hide them on mobile ─────────── */
-  #teams-tab,
-  #country-nav-tab { display: none; }
+  /* Desktop side tabs removed */
 
   /* ── Mobile bottom navigation bar ───────────────────── */
   /* ── All three panels become bottom sheets ───────────── */
@@ -1787,6 +1738,108 @@ header {
   .refl-grid   { grid-template-columns: 1fr; }
   #reflections-overlay { overflow-y: auto; }
   .refl-panel  { position: relative; min-height: 100vh; }
+}
+
+
+/* ── Modal polish ────────────────────────────────────────── */
+
+/* Taller, more cinematic hero image */
+.modal-img        { height: 380px; }
+.modal-img-overlay { height: 380px; }
+
+/* Category badge — pill style */
+.modal-badge {
+  display: inline-flex; align-items: center;
+  padding: 4px 12px;
+  border: 1px solid rgba(201,168,76,0.45);
+  background: rgba(201,168,76,0.08);
+  border-radius: 20px;
+  font-size: 9px; letter-spacing: 2.5px;
+}
+
+/* Local name */
+.modal-local-name {
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px; font-style: italic;
+  color: rgba(201,168,76,0.55);
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+/* Meta grid — 4 columns */
+.modal-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.meta-item {
+  padding: 10px 14px;
+  border-right: 1px solid rgba(201,168,76,0.08);
+}
+.meta-item:first-child { padding-left: 0; }
+.meta-item:last-child  { border-right: none; }
+.meta-label {
+  font-size: 7.5px; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold); opacity: 0.45;
+  margin-bottom: 5px; display: block;
+}
+.meta-value { font-size: 13px; line-height: 1.4; }
+
+/* Description — slightly larger, better spacing */
+.modal-desc {
+  font-size: 16px; line-height: 1.9;
+  margin-bottom: 28px;
+}
+
+/* Links — styled as proper buttons */
+.modal-links {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-top: 4px;
+}
+.modal-link {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 18px;
+  border: 1px solid rgba(201,168,76,0.25);
+  background: rgba(201,168,76,0.05);
+  color: rgba(201,168,76,0.85);
+  text-decoration: none;
+  font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: all 0.25s; opacity: 1;
+  position: relative; overflow: hidden;
+}
+.modal-link::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(201,168,76,0.1);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.modal-link:hover::before { transform: scaleX(1); }
+.modal-link:hover {
+  border-color: rgba(201,168,76,0.6);
+  color: #fff;
+}
+.modal-link-icon {
+  flex-shrink: 0; opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.modal-link:hover .modal-link-icon {
+  opacity: 1; transform: translateX(2px);
+}
+
+/* Mobile modal adjustments */
+@media (max-width: 768px) {
+  .modal-img, .modal-img-overlay { height: 220px; }
+  .modal-meta { grid-template-columns: repeat(2, 1fr); }
+  .meta-item:nth-child(2) { border-right: none; }
+  .meta-item:nth-child(3) { border-right: 1px solid rgba(201,168,76,0.08); padding-left: 0; }
 }
 
 </style>
@@ -4312,6 +4365,7 @@ header {
       <div class="modal-badge" id="modal-badge"></div>
       <div class="modal-title" id="modal-title"></div>
       <div class="modal-subtitle" id="modal-subtitle"></div>
+      <div class="modal-local-name" id="modal-local-name"></div>
       <div class="modal-meta">
         <div class="meta-item"><span class="meta-label">Inscribed</span><span class="meta-value" id="m-year"></span></div>
         <div class="meta-item"><span class="meta-label">Country</span><span class="meta-value" id="m-country"></span></div>
@@ -4916,7 +4970,14 @@ function openDetail(site, country) {
   document.getElementById("modal-img").src = site.image;
   document.getElementById("modal-badge").textContent = site.category;
   document.getElementById("modal-title").textContent = site.name;
-  document.getElementById("modal-subtitle").textContent = site.local + " — " + site.parent;
+  document.getElementById("modal-subtitle").textContent = site.parent;
+  const localEl = document.getElementById("modal-local-name");
+  if (site.local && site.local.trim()) {
+    localEl.textContent = site.local;
+    localEl.style.display = "block";
+  } else {
+    localEl.style.display = "none";
+  }
   document.getElementById("m-year").textContent = site.year;
   document.getElementById("m-country").textContent = country;
   document.getElementById("m-location").textContent = site.location;
@@ -4926,8 +4987,10 @@ function openDetail(site, country) {
   linksEl.innerHTML = "";
   (site.links||[]).forEach(l => {
     const a = document.createElement("a");
-    a.className = "modal-link"; a.href = l.url; a.target = "_blank"; a.rel = "noopener noreferrer";
-    a.textContent = l.label; linksEl.appendChild(a);
+    a.className = "modal-link";
+    a.href = l.url; a.target = "_blank"; a.rel = "noopener noreferrer";
+    a.innerHTML = '<svg class="modal-link-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>' + escapeText(l.label);
+    linksEl.appendChild(a);
   });
   const noteEl = document.getElementById("modal-note");
   if (site.note) { noteEl.textContent = site.note; noteEl.style.display = "block"; }
@@ -5658,14 +5721,16 @@ function escapeHtml(s) {
 }
 
 
+
+function escapeText(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
 </script>
 
 
 <!-- ===== TEAMS TAB ===== -->
-<div id="teams-tab" onclick="teamsToggle()">
-  <span class="tab-icon">👥</span>
-  Project Teams
-</div>
 
 <!-- ===== TEAMS PANEL ===== -->
 <div id="teams-panel">
@@ -5691,10 +5756,6 @@ function escapeHtml(s) {
 </div>
 
 
-<div id="country-nav-tab" onclick="countryNavToggle()">
-  <span class="tab-icon">🌍</span>
-  Countries
-</div>
 <div id="country-nav-panel">
   <div class="cn-header">
     <div class="cn-eyebrow">Navigate by</div>
