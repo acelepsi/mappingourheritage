@@ -5570,23 +5570,9 @@ function jbHeaders(isWrite) {
 
 // ── Get or create bin ID ──────────────────────────────────
 async function getBinId() {
-  if (reflBinId) return reflBinId;
-  reflBinId = localStorage.getItem(JSONBIN_BIN_KEY);
-  if (reflBinId) { console.log('[Reflections] Using cached bin:', reflBinId); return reflBinId; }
-
-  console.log('[Reflections] Creating new bin...');
-  const res = await fetchWithTimeout(JSONBIN_BASE + '/b', {
-    method: 'POST',
-    headers: jbHeaders(true),
-    body: JSON.stringify({ posts: [] })
-  });
-  const text = await res.text();
-  console.log('[Reflections] Create bin response (' + res.status + '):', text);
-  if (!res.ok) throw new Error('Create bin failed ' + res.status + ': ' + text);
-  const data = JSON.parse(text);
-  reflBinId = data.metadata.id;
-  localStorage.setItem(JSONBIN_BIN_KEY, reflBinId);
-  console.log('[Reflections] Bin created:', reflBinId);
+  // Bin ID hardcoded — created manually on JSONBin dashboard
+  reflBinId = '69bc500caa77b81da9fd8f73';
+  console.log('[Reflections] Using bin:', reflBinId);
   return reflBinId;
 }
 
